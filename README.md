@@ -1,5 +1,9 @@
 # project-init-ubuntu
-轻量云主机如今日渐深入人心, 但是云主机的初始化和镜像迁移无疑是个非常痛苦的过程; 本项目致力于快速配置基于Ubuntu 20的云主机初始化和镜像迁移; 未来总结经验, 一键生成开发环境(可能会通过 docker-file 或 shell)的形式
+轻量云主机如今日渐深入人心, 但是云主机的初始化和镜像迁移无疑是个非常痛苦的过程; 
+
+本项目致力于快速配置基于Ubuntu 20的云主机初始化和镜像迁移; 
+
+未来总结经验, 一键生成开发环境(可能会通过 docker-file 或 shell)的形式
 
 # terminal -> zsh & OH-MY-ZSH
 https://www.spacevast.com/archives/centos7-linux%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh%E5%86%85%E5%90%AB%E5%9B%BD%E5%86%85%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95
