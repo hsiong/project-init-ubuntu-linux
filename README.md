@@ -46,8 +46,6 @@ https://blog.csdn.net/abld99/article/details/69388858
 [zshrc](oh-my-zsh/zshrc)  
 `source ~/.zshrc`
 
-
-
 # apt - vim
 ## show line number
 http://c.biancheng.net/view/809.html#:~:text=%E5%9C%A8%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8B%E8%BE%93%E5%85%A5,%E5%A6%82%E5%9B%BE1%20%E6%89%80%E7%A4%BA%E3%80%82&text=%E5%A6%82%E6%9E%9C%E6%83%B3%E8%A6%81%E5%8F%96%E6%B6%88%E8%A1%8C,%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8%E5%9C%B0%EF%BC%89%E4%B8%AD%E8%AF%BB%E5%8F%96.
