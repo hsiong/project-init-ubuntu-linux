@@ -10,7 +10,12 @@ git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zs
 ## local ~/project-init-ubuntu/oh-my-zsh/plugins
 scp -r ~/project-init-ubuntu/oh-my-zsh/plugins/* user@ip:/root/.oh-my-zsh/custom/plugins
 
-### remote
+# or local copy
+cd /remoteDir/zsh/plugins 
+cp -r ./* ~/.oh-my-zsh/custom/plugins
+
+# remote
 apt-get install unzip
 
-cd /root/.oh-my-zsh/custom/plugins & unzip zsh-syntax-highlighting.zip
+cd /root/.oh-my-zsh/custom/plugins 
+unzip \*.zip
