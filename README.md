@@ -45,12 +45,24 @@ systemctl restart sshd.service
 ## ssh ServerAliveInterval
 https://blog.csdn.net/abld99/article/details/69388858
 ```shell
-echo 'ServerAliveInterval 60' >> /root/.ssh/config
+echo 'ServerAliveInterval 60' >> ~/.ssh/config
 
 systemctl restart sshd.service
+
 ```
 
 
+
+## local ssh auth changed
+
++ Local
+
+```shell
+vim ~/.ssh/known_hosts
+```
+
++ dd known host
++ :wq!
 
 # terminal
 
@@ -149,7 +161,20 @@ http://c.biancheng.net/view/809.html#:~:text=%E5%9C%A8%E5%91%BD%E4%BB%A4%E6%A8%A
 echo 'set nu' >> ~/.vimrc
 ```
 
+## chinese garbled
+
+```shell
+echo 'set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936' >> ~/.vimrc
+echo 'set termencoding=utf-8' >> ~/.vimrc
+echo 'set encoding=utf-8' >> ~/.vimrc
+```
+
+
+
+
+
 # Linux config DNS
+
 https://blog.csdn.net/u010416101/article/details/79719713
 
 ```shell
@@ -197,18 +222,64 @@ newgrp docker
 
 ## docker - redis
 
+```shell
 docker run -d --name myredis -p 6379:6379 redis --requirepass "mypassword"
+```
+
+
 
 ## docker - postgresGis
+
++ init postgres
+
+```shell
 docker run -d --name postgres -p 5432:5432 -e POSTGRES_USER=usr -e POSTGRES_PASSWORD=pwd kartoza/postgis
+```
+
++ change password
+
+```shell
+docker exec -it -u postgres postgres psql -U postgres;
+```
+
+```postgresql
+ALTER USER postgres WITH PASSWORD 'newPwd';
+```
+
++ create database
+
+```postgresql
+CREATE DATABASE db1 WITH ENCODING 'UTF8';
+```
+
+
 
 ## docker - nginx
-docker run --name nginx -p 80:80 \
--v /root/config/docker/:/etc/nginx/conf.d/ \
--v /root/download:/usr/share/nginx/download \
+
++ sync config
+
+```shell
+scp -r /local/docker/* name@ip:/remote/docker
+```
+
++ Init
+
+```shell
+docker run --name nginx \
+-p 80:80 \
+-p 443:443 \
+-v ~/config/nginx/conf:/etc/nginx/conf.d/ \
+-v ~/download:/usr/share/nginx/download \
+-v ~/config/nginx/html:/usr/share/nginx/html/ \
 -d nginx
-### nginx config
+```
+
 
 ## docker - jekins
+
 ### jekins - maven - optimize
 https://www.cnblogs.com/yatho/p/7233194.html
+
+
+
+> use docker bridge/compose, or nginx/redis/pg would 
