@@ -151,6 +151,9 @@ vim ~/.zshrc
 source ~/.zshrc
 ```
 
+> if error: 
+> consider chmod 755 zshrc
+
 
 
 # apt - vim
