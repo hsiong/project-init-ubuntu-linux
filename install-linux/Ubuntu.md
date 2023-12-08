@@ -175,7 +175,29 @@ https://cn.linux-console.net/?p=17881
 
 https://github.com/hsiong/learning-my-note/blob/main/tool/system/idea.md
 
-[Linux（Ubuntu）安装idea-阿里云开发者社区 (aliyun.com)](https://developer.aliyun.com/article/905483#:~:text=Linux（Ubuntu）安装idea 1 2，解压 idea 安装包 到 opt 目录,2 3，执行 .%2Fidea.sh （命令如下）： 3 4，linux下安装idea创建桌面快捷方式（不然每次启动的时候都需要到idea目录bin下执行： .%2Fidea.sh 有点麻烦）)
+[Linux（Ubuntu）安装idea-阿里云开发者社区 (aliyun.com)](https://developer.aliyun.com/article/905483#:~:text=Linux)
+
+**linux下安装idea创建桌面快捷方式**
+
+```
+touch idea.desktop　　　　#创建快捷方式
+vi idea.desktop　　　　　　#编辑此文件
+```
+
+```
+[Desktop Entry]     
+Name=IntelliJ IDEA
+Comment=IntelliJ IDEA
+Exec=/opt/idea-IU-212.5284.40/bin/idea.sh          
+Icon=/opt/idea-IU-212.5284.40/bin/idea.png
+Terminal=false
+Type=Application
+Categories=Developer;
+```
+
+ \#"Exec"是执行脚本的路径，就是idea的bin目录的路径
+
+ 然后，给给此文件添加执行权限：`chmod u+x idea.desktop`
 
 + main menu
   + Click `Show main menu in a separate toolbar`
