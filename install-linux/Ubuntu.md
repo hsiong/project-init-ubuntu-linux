@@ -108,6 +108,7 @@ Refer: [Linux/ubuntu下实现科学上网使用 clash for windows 详细步骤|�
 ### Proxy
 
 + System proxy: 127.0.0.1 7890
++ git
 
 ## Terminal
 
@@ -143,6 +144,8 @@ To make Guake completely replace the default terminal in Ubuntu, follow these st
 + adjust `Geometry` : height, width...
 + Appearance -> Dock
 
+### Install oh-my-zsh
+
 ## Theme - Gnome
 
 Refer: https://blog.csdn.net/ksws0292756/article/details/79953155
@@ -158,11 +161,36 @@ Refer: https://blog.csdn.net/ksws0292756/article/details/79953155
 + 下载 theme, 解压缩到 ~/.theme 目录下
 https://www.gnome-look.org/
 
-## Nautilus
+
+
+## Chinese Font
+
+## Soft
+
+### Nautilus
 
 https://cn.linux-console.net/?p=17881
 
-## Chinese Font
+### Pycharm
+
+https://github.com/hsiong/learning-my-note/blob/main/tool/system/idea.md
+
+[Linux（Ubuntu）安装idea-阿里云开发者社区 (aliyun.com)](https://developer.aliyun.com/article/905483#:~:text=Linux（Ubuntu）安装idea 1 2，解压 idea 安装包 到 opt 目录,2 3，执行 .%2Fidea.sh （命令如下）： 3 4，linux下安装idea创建桌面快捷方式（不然每次启动的时候都需要到idea目录bin下执行： .%2Fidea.sh 有点麻烦）)
+
++ main menu
+  + Click `Show main menu in a separate toolbar`
+
+### Sublime
+
+### Git
+
+### Anaconda
+
+### Other
+
++ teminal: ctrl+alt+t
++ file manager: nautilus
++ text editor: gedit
 
 ## Start up
 
@@ -170,8 +198,5 @@ https://cn.linux-console.net/?p=17881
 + guake
 + Dingding
 
-## Shortcut
-
-+ teminal: ctrl+alt+t
-+ file manager: nautilus
++ 
 
