@@ -317,7 +317,8 @@ Fcitx Config Tool:
 
 + teminal: ctrl+alt+t
 + file manager: nautilus
-+ text editor: gedit
++ text editor: gedit 
++ markdown: typora(permanent use)
 
 ## Start up
 
