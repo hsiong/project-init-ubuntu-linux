@@ -286,3 +286,19 @@ https://www.cnblogs.com/yatho/p/7233194.html
 
 
 > use docker bridge/compose, or nginx/redis/pg would 
+
+
+# Python
+
+install python3.12
+
+```
+sudo apt update && sudo apt upgrade -y
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-cache policy python3.12
+
+sudo apt install python3.12
+ls /usr/bin/python*
+
+```
