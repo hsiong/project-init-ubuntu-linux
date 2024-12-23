@@ -302,3 +302,7 @@ sudo apt install python3.12
 ls /usr/bin/python*
 
 ```
+
+# shortcuts
+
+change screenshot -> `ctrl + shift + alt + R`
