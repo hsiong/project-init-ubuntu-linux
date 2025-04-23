@@ -296,6 +296,8 @@ Categories=Developer;
 
 https://shurufa.sogou.com/linux/guide
 
+sudo /opt/sogoupinyin/files/bin/sogoupinyin-watchdog
+
 Fcitx Config Tool:
 
 + add input method: unclick `Only show current Language` -> sogou pinyin
@@ -303,9 +305,36 @@ Fcitx Config Tool:
 + addon: unclick `Simplified Chinese To Traditional Chinese` & cancel shortcuts
 + cancel all shortcuts (esc)
 
-### Docker
+```
+sudo apt install \
+    libqt5gui5 \
+    libqt5core5a \
+    libqt5widgets5 \
+    qtwayland5 \
+    libx11-xcb1 \
+    libxcb-xinerama0 \
+    libxcb1 \
+    libxkbcommon-x11-0
 
-### 
+3、通过命令行安装aptitude 
+sudo apt-get install aptitude
+
+4、通过命令行利用aptitude 安装fcitx、qt
+sudo aptitude install fcitx-bin fcitx-table fcitx-config-gtk fcitx-config-gtk2 fcitx-frontend-all
+sudo aptitude install qt5-default qtcreator qml-module-qtquick-controls2
+
+5、如果右上角没有出现fcitx，在终端中输入im-config进行配置
+
+6、通过命令行安装百度输入法
+sudo dpkg –i fcitx-baidupinyin.deb
+
+```
+
++ fcitx add input Chinese
+
++ final solution: use baidu input
+
+### Docker
 
 ### Sublime
 
@@ -325,6 +354,15 @@ Fcitx Config Tool:
 + clash
 + guake
 + Dingding
-
 + 
 
+## sudo ubuntu-drivers autoinstall ;  mint no connection
+https://blog.csdn.net/weixin_47869094/article/details/140512275
+
++ uname -a
++ dpkg --get-selections | grep linux
++ http://archive.ubuntu.com/ubuntu/pool/main/l/linux/
+  + header
+  + header-generic
+  + extra
++ sudo dpkg -i *.deb
