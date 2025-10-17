@@ -36,7 +36,7 @@ usually F12, otherwise F2+Enter
   | swap  | 物理内存两倍 | swap | 交换空间：交换分区相当于Windows中的“虚拟内存”，如果内存低的话（1-4G），物理内存的两倍，高点的话（8-16G）要么等于物理内存，要么物理内存+2g左右， |
   | /boot | 1G左右       | ext4 | **空间起始位置** 分区格式为ext4 **/boot** **建议：应该大于400MB或1GB** Linux的内核及引导系统程序所需要的文件，比如 vmlinuz initrd.img文件都位于这个目录中。在一般情况下，GRUB或LILO系统引导管理器也位于这个目录；启动撞在文件存放位置，如kernels，initrd，grub。 |
   | /tmp  | 5G左右       | ext4 | 系统的临时文件，一般系统重启不会被保存。（建立服务器需要？） |
-  | /home | 尽量大些     | ext4 | 用户工作目录；个人配置文件，如个人环境变量等；所有账号分配一个工作目录。 |
+  | /home | 80G          | ext4 | 用户工作目录；个人配置文件，如个人环境变量等；所有账号分配一个工作目录。 |
 
 > No such device Can not mount /dev/loop0
 >
@@ -136,7 +136,8 @@ nvidia-smi
   ll
   ```
 
-+ ```
++ change Desktop group
+  ```
   sudo chown -R user:group xxx.desktop
   ```
 
