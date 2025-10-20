@@ -25,6 +25,8 @@
 
 **最关键一步：引导加载器安装位置**
 
+直接物理卸载硬盘
+
 在安装界面底部有一行：
 
 ```
@@ -155,6 +157,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 ### VPN
 
++ v2rayN
+  + subscript
+  + update
 + sublime ~/.zshrc
 
 ```
@@ -165,6 +170,35 @@ export https_proxy=http://127.0.0.1:7890
 export http_proxy=
 export all_proxy=
 ```
+
+### DeskFlow
+
++ 使用 flatpak 安装
+
+```
+sudo apt install flatpak
+
+http_proxy=http://127.0.0.1:10808 \
+https_proxy=http://127.0.0.1:10808 \
+flatpak install --user ./deskflow-1.20.1-linux-x86_64.flatpak
+```
+
++ 启动
+
+```
+flatpak run org.deskflow.deskflow
+```
+
+可以`Coinfigure Server`来调整左右屏幕
+
++ 自启动   使用 Cinnamon 自启动（图形界面）【推荐】
+  + 打开菜单 → **系统设置** → **启动应用程序 (Startup Applications)**
+  + 点击 “添加” → “自定义命令”
+  + 填写：
+
+> 名称：Deskflow
+>
+> 命令：`flatpak run org.deskflow.deskflow`
 
 ### 我想让 Guake 完全替代默认终端
 
