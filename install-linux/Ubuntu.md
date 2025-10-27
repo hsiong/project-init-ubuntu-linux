@@ -75,7 +75,9 @@ sudo apt-get install g++ gcc make
 ubuntu-drivers devices
 ```
 
-[这将会输出一些信息，其中包含了系统推荐安装的驱动程序，比如 `nvidia-driver-440`](https://blog.csdn.net/clancy_wu/article/details/119838008)(https://blog.csdn.net/clancy_wu/article/details/119838008)。
+> 2080Ti 魔改卡
+>
+> [这将会输出一些信息，其中包含了系统推荐安装的驱动程序，比如 `nvidia-driver-440`](https://blog.csdn.net/clancy_wu/article/details/119838008)(https://blog.csdn.net/clancy_wu/article/details/119838008)。
 
 + [**自动安装驱动**](https://blog.csdn.net/clancy_wu/article/details/119838008)：
 
