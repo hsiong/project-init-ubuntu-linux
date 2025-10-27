@@ -183,10 +183,30 @@ git config --global https.proxy http://127.0.0.1:10808
 
 6. 安装驱动
 
+   > 千万不要执行 `sudo ubuntu-drivers autoinstall `, 会导致各种驱动异常
+   >
+   > 万一执行了, 那么
+   >
+   > ```
+   > uname-a
+   > ```
+   >
+   > 下载对应的 extra xxx
+   >
+   >  https://packages.ubuntu.com/noble/linux-modules-extra-6.14.0-33-generic
+   >
+   > ```
+   > cd ~/Downloads
+   > sudo dpkg -i linux-modules-extra-6.14.0-33-generic_*.deb
+   > sudo update-initramfs -u
+   > sudo reboot
+   > lspci -nnk | grep -A3 -i eth
+   > ```
+
    ```
    sudo add-apt-repository ppa:graphics-drivers/ppa -y
    sudo apt update
-   sudo ubuntu-drivers autoinstall # sudo apt install nvidia-driver-550; 非目标电脑, 需要指定版本
+   sudo apt install nvidia-driver-550;
    sudo reboot
    ```
 
