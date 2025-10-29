@@ -96,6 +96,12 @@ PCI\VEN_10EC&DEV_8126&SUBSYS_XXXX
 
 ## Install
 
+**`~/.zshrc`**：仅交互式 zsh 打开时执行。放别名/函数/轻量 PATH 追加。
+
+**`~/.profile`**：登录会话（含 GUI）加载；**GUI 启动的应用能继承**。放 `PATH/JAVA_HOME/ANDROID_HOME/LANG/EDITOR` 等。
+
+**`/etc/environment`**：系统级、键值对格式（不支持 shell 语法/变量引用），适合全局 `PATH`、`LANG` 等。
+
 ### VIM
 
 ```
@@ -105,37 +111,43 @@ sudo apt install vim -y
 
 ### VPN
 
-+ v2rayN
-  + subscript
-  + update
++ Clash Verge
+  + subscript: Home -> Direct
 + sublime ~/.zshrc
++ startup - add application
 
 ```
-export https_proxy=http://127.0.0.1:10808 
-export http_proxy=http://127.0.0.1:10808
-# export all_proxy=socks5://127.0.0.1:7890
+export https_proxy="http://127.0.0.1:7897"
+#export http_proxy="http://127.0.0.1:7897" 
+export all_proxy=
 ```
 
-#### APT（可选）
+#### APT
 
-如果希望 apt 也走代理，新建文件：
+用代理, 国内源差的东西太多了
 
 ```
-sudo nano /etc/apt/apt.conf.d/01proxy
+sudo vim /etc/apt/apt.conf.d/01proxy
 ```
 
 写入：
 
 ```
-Acquire::http::Proxy "http://127.0.0.1:10808/";
-Acquire::https::Proxy "http://127.0.0.1:10808/";
+Acquire::http::Proxy "http://127.0.0.1:7897/";
+Acquire::https::Proxy "http://127.0.0.1:7897/";
 ```
 
-#### Git（可选）
+不要用代理, 使用国内源
 
 ```
-git config --global http.proxy  http://127.0.0.1:10808
-git config --global https.proxy http://127.0.0.1:10808
+sudo xed /etc/apt/sources.list.d/official-package-repositories.list
+
+deb http://mirrors.aliyun.com/linuxmint zara main upstream import backport #id:linuxmint_main
+deb http://mirrors.aliyun.com/ubuntu/ noble main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ noble-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ noble-backports main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ noble-security main restricted universe multiverse
+sudo add-apt-repository universe -y & sudo apt update
 ```
 
 ### 显卡驱动
@@ -204,11 +216,17 @@ git config --global https.proxy http://127.0.0.1:10808
    > ```
 
    ```
-   sudo add-apt-repository ppa:graphics-drivers/ppa -y
    sudo apt update
-   sudo apt install nvidia-driver-550;
+   # 不需要 graphics-drivers PPA，Ubuntu 官方仓库现在已经内置主流 NVIDIA 驱动（550/560）
+   sudo apt install nvidia-driver-550 -y
    sudo reboot
    ```
+
+### Mint Panel 调整
+
+move; size
+
+> reboot
 
 ### oh-my-zsh
 
@@ -235,7 +253,15 @@ zsh --version
 
 ```
 chsh -s $(which zsh)
+sudo chsh -s $(which zsh) $USER
+echo $SHELL
 ```
+
+> setttings -> Keyboard  -> shortcut -> bindings
+>
+> + ctrl + alt + t -> Lauch terminal -> unassigned
+>
+> + Add custom shortcut
 
 然后退出重新登录（或重启终端），Zsh 就会成为默认的 Shell。
 
@@ -257,12 +283,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 安装后你会看到一个新的、彩色的命令提示符。
 
-> setttings -> Keyboard  -> shortcut -> bindings
->
-> + ctrl + alt + t -> Lauch terminal -> unassigned
->
-> + Add custom shortcut
-
 ------
 
 🧠 **5. 可选：更换主题 / 插件**
@@ -270,13 +290,13 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 - 修改配置文件：
 
   ```
-  nano ~/.zshrc
+  vim ~/.zshrc
   ```
 
 - 修改主题：
 
   ```
-  ZSH_THEME="agnoster"
+  ZSH_THEME="philips"
   ```
 
 - 常见插件（自动补全 / 高亮）：
@@ -292,9 +312,32 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   ```
 
-> `plugins=(git zsh-autosuggestions zsh-syntax-highlighting) `改为 `plugins=(zsh-autosuggestions zsh-syntax-highlighting)`
+> `plugins=(git) `改为 `plugins=()`
 >
 > 否则会因为 git 原因卡死
+
++ pokemonsay
+
+```
+sudo apt install fortune-mod -y
+sudo apt install -y cowsay
+cd ~
+git clone https://github.com/possatti/pokemonsay.git
+cd pokemonsay
+./install.sh
+# add to zshrc
+fortune | pokemonsay
+source ~/.zshrc
+```
+
+### Git
+
++ ~/.profile
+
+```
+git config --global http.proxy http://127.0.0.1:7897
+git config --global https.proxy http://127.0.0.1:7897
+```
 
 ### DeskFlow
 
@@ -302,6 +345,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 ```
 sudo apt install flatpak
+
+# https://github.com/deskflow/deskflow/releases/download/v1.20.1/deskflow-1.20.1-linux-x86_64.flatpak
 
 http_proxy=http://127.0.0.1:10808 \
 https_proxy=http://127.0.0.1:10808 \
@@ -325,60 +370,304 @@ flatpak run org.deskflow.deskflow
 >
 > 命令：`flatpak run org.deskflow.deskflow`
 
-### 我想让 Guake 完全替代默认终端
++ mac 与 linux 共用快捷键
 
-因为原生 terminal 不支持撤销和重做
+#### Tailscale
 
-ctrl + c & ctrl + v 也不支持
+Google 账号统一登录
+
+实现跨网端控制
+
++ Linux
+  + `sudo tailscale up`  
+  + 输入 Tailscale Machine Ip
+
++ Mac 
+  	+ Configure Server 控制
+  	+ 一段时间可能会掉线 ⭐️ 需优化
+
+#### mint 如何通过 deskflow 把 ctrl 与  alt 颠倒
+
+现在的情况
+
+| mac键盘 | mint |
+| ------- | ---- |
+| cmd     | ctrl |
+| opt     | alt  |
+| ctrl    | win  |
+
+希望
+| mac键盘 | mint |
+| ------- | ---- |
+| cmd     | alt  |
+| opt     | win  |
+| ctrl    | ctrl |
+
+> 未实现, 回家搞
+
+### 输入法 - 百度
+
+✅ 一、准备工作：安装 `aptitude`（可选）
+
+```
+sudo apt update
+sudo apt install -y aptitude
+```
+
+`aptitude` 只是 `apt` 的增强界面，也可以直接用 `apt`。
+
+------
+
+✅ 二、安装 Fcitx 4 框架（百度输入法依赖的是 Fcitx 4，而不是 Fcitx 5）
+
+Mint 22 默认没有 Fcitx 4，你需要手动安装：
+
+```
+sudo apt install -y fcitx fcitx-bin fcitx-table fcitx-ui-classic fcitx-config-common fcitx-frontend-gtk3 fcitx-frontend-qt5
+```
+
+> ⚠️ 不要安装 `fcitx5` 系列，会冲突。
+
+------
+
+✅ 三、安装 Qt 环境（旧版 fcitx-baidupinyin 依赖 Qt 5）
+
+Ubuntu 24.04 已弃用 `qt5-default`，用以下包替代：
+
+```
+sudo apt install -y qtbase5-dev qtbase5-dev-tools qtchooser qttools5-dev-tools qml-module-qtquick-controls2
+```
+
+✅ 四、设置输入法框架
+
+运行配置工具选择 Fcitx 为默认输入法系统：
+
+```
+im-config -n fcitx
+```
+
+注销或重启桌面一次，让 Fcitx 生效。
+ 如果右上角仍无小键盘图标，执行：
+
+```
+fcitx-autostart &
+```
+
+✅五、添加输入法
+
+打开 Fcitx 配置工具：
+
+```
+fcitx-config-gtk3
+```
+
+点击 “+” 号 → 搜索 “Baidu Pinyin” → 添加为默认输入法。
+ 切换快捷键通常为 `Ctrl + Space`。
 
 ### Chrome
 
++ 注释掉 Google Chrome 源
 
+```
+sudo xed /etc/apt/sources.list.d/google-chrome.list
+```
+
+改成：
+
+```
+# deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
+```
+
+### Typora
+
+下载安装包, 安装即可
+
+- https://lizhi.shop/products/typora?cid=jxlwguir
+- 新用户免费加入会员，首单立减 5 元
+- 结算页面输入“APPINN”优惠码，额外再享 95 折优惠；
+
+### Java
+
+```
+sudo apt update
+sudo apt install openjdk-17-jdk
+vim ~/.profile
+```
+
+在末尾添加：
+
+```
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
+export PATH=$JAVA_HOME/bin:$PATH
+```
+
+然后让配置生效：
+
+```
+source ~/.profile
+```
+
+验证：
+
+```
+echo $JAVA_HOME
+java -version
+```
+
+验证编译器
+
+```
+javac -version
+```
+
+输出示例：
+
+```
+javac 17.0.9
+```
+
+### Python
+
+Mint 通常自带 Python 3：
+
+```
+python3 --version
+```
+
+输出类似：
+
+```
+Python 3.10.12
+```
+
+说明已经安装。如果没有，或者你想安装其他版本，继续看下去。
+
+```
+sudo apt update
+sudo apt install -y python3 python3-pip python3-venv python3-dev
+python3 --version
+pip3 --version
+```
+
+`python3-venv`: 创建虚拟环境
+
+`python3-dev`: 编译 C 扩展时所需
+
+`build-essential`: gcc、make 等基础工具
+
+### Pycharm & IDEA
+
++ pycharm - Linux Arm64
++ IDEA - Linux aarch64
+
+#### 一、路径确认
+
+你的软件路径是：
+
+- IntelliJ IDEA:
+   `/home/hsiong/code/Software/idea-IU-241.19416.15`
+- PyCharm:
+   `/home/hsiong/code/Software/pycharm-2024.1.7`
+
+可执行文件一般在它们的 `bin/` 目录中：
+
+- IDEA 启动器：`/home/hsiong/code/Software/idea-IU-241.19416.15/bin/idea.sh`
+- PyCharm 启动器：`/home/hsiong/code/Software/pycharm-2024.1.7/bin/pycharm.sh`
+
+------
+
+#### 🧩 二、生成桌面图标（.desktop 文件）
+
+运行以下命令来创建两个快捷方式 👇
+
+1️⃣ IntelliJ IDEA
+
+```
+cat <<EOF > ~/.local/share/applications/idea.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=IntelliJ IDEA
+Icon=/home/hsiong/code/Software/idea-IU-241.19416.15/bin/idea.png
+Exec=/home/hsiong/code/Software/idea-IU-241.19416.15/bin/idea.sh
+Comment=JetBrains IntelliJ IDEA
+Categories=Development;IDE;
+Terminal=false
+StartupNotify=true
+EOF
+```
+
+------
+
+2️⃣ PyCharm
+
+```
+cat <<EOF > ~/.local/share/applications/pycharm.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PyCharm
+Icon=/home/hsiong/code/Software/pycharm-2024.1.7/bin/pycharm.png
+Exec=/home/hsiong/code/Software/pycharm-2024.1.7/bin/pycharm.sh
+Comment=JetBrains PyCharm
+Categories=Development;IDE;
+Terminal=false
+StartupNotify=true
+EOF
+```
+
+------
+
+#### 🧰 三、赋予执行权限
+
+```
+chmod +x ~/.local/share/applications/idea.desktop
+chmod +x ~/.local/share/applications/pycharm.desktop
+```
+
+------
+
+#### 🖥️ 四、添加到桌面（可选）
+
+Mint 允许从菜单拖动图标到桌面，
+ 但你也可以直接复制：
+
+```
+cp ~/.local/share/applications/idea.desktop ~/Desktop/
+cp ~/.local/share/applications/pycharm.desktop ~/Desktop/
+chmod +x ~/Desktop/idea.desktop ~/Desktop/pycharm.desktop
+```
+
+------
+
+#### 🧼 五、刷新菜单
+
+执行：
+
+```
+update-desktop-database ~/.local/share/applications/
+```
+
+然后你就可以在 Mint 菜单中搜索到 “IntelliJ IDEA” 和 “PyCharm”，
+ 或在桌面上双击运行 🎉
+
+#### pycharm 导入 setting文件后导致了这个报错￼￼￼
+
+可能是导入的 pycharm  key/vmoptions 导致的错误
+
+```
+rm -rf pycharm.key pycharm64.vmoptions
+```
 
 ### Sublime
 
 
 
-### Typora
+### 我想让 Guake 完全替代默认终端
 
+因为原生 terminal 不支持撤销和重做
 
-
-### pokemonsay
-
-
-
-### Java
-
-
-
-### Python
-
-
-
-### Node
-
-
-
-### Git
-
-+ ~./zshrc
-
-```
-git config --global http.proxy http://127.0.0.1:7890
-git config --global https.proxy http://127.0.0.1:7890
-```
-
-
-
-### Pycharm
-
-
-
-### Idea
-
-
-
-### Graphic & Internet Drivers
+ctrl + c & ctrl + v 也不支持
 
 
 
@@ -388,7 +677,7 @@ git config --global https.proxy http://127.0.0.1:7890
 
 ### BaiduDisk
 
-
+### Node(可选)
 
 
 
@@ -423,3 +712,35 @@ grub 没用; 或者重装系统
 ## Nemo 
 + sftp://user@host/dir
 
+## mint 怎么把文件夹放到 mycomputer 或 bookmarks 上
+
+### 通过图形界面（最简单）
+
+适用于 Mint 自带的文件管理器 **Nemo**。
+
+✅ 把文件夹添加到“书签”（Bookmarks）
+
+1. 打开文件管理器（Nemo）
+
+2. 找到要添加的文件夹，比如：
+
+   ```
+   /home/hsiong/code/Software
+   ```
+
+3. 右键该文件夹 → 选择 **“添加到书签”**（Add to Bookmarks）
+
+4. 现在它会出现在左侧侧边栏的 “书签” 区域中
+
+📍 你也可以拖动文件夹直接到左侧书签区域来添加。
+
+#### 命令行快速恢复
+
+执行下面这条命令即可恢复 **下载（Downloads）** 到侧边栏：
+
+```
+echo "file:///home/$USER/Downloads Downloads" >> ~/.config/gtk-3.0/bookmarks
+```
+
+然后重新打开文件管理器（或按 `F5` 刷新），
+ 你会看到左侧栏中出现了 “Downloads”。
