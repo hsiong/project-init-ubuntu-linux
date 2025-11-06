@@ -73,6 +73,10 @@ Device for boot loader installation:
 > sudo efibootmgr
 >
 > sudo efibootmgr -b 0005 -B
+>
+> #### 启动失败, 直接进入 grub
+> -> 没找到 EFI, 把硬盘重新插一下试试
+> 
 
 ### 网卡
 
