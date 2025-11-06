@@ -489,6 +489,15 @@ sudo xed /etc/apt/sources.list.d/google-chrome.list
 # deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
 ```
 
++ 1106/180558.090845:ERROR:third_party/crashpad/crashpad/snapshot/elf/elf_dynamic_array_reader.h:64 tag not found
+```
+sudo apt update
+sudo apt install --reinstall libnss3 libatk-bridge2.0-0 libatspi2.0-0 libdrm2 \
+  libx11-6 libx11-xcb1 libxkbcommon0 libgtk-3-0
+sudo apt -f install
+sudo apt full-upgrade
+```
+
 ### Typora
 
 下载安装包, 安装即可
