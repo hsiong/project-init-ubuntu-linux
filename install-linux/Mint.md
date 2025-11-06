@@ -339,6 +339,7 @@ git config --global http.proxy http://127.0.0.1:7897
 git config --global https.proxy http://127.0.0.1:7897
 ```
 
+
 ### DeskFlow
 
 + 使用 flatpak 安装
@@ -348,8 +349,8 @@ sudo apt install flatpak
 
 # https://github.com/deskflow/deskflow/releases/download/v1.20.1/deskflow-1.20.1-linux-x86_64.flatpak
 
-http_proxy=http://127.0.0.1:10808 \
-https_proxy=http://127.0.0.1:10808 \
+http_proxy=http://127.0.0.1:7897 \
+https_proxy=http://127.0.0.1:7897 \
 flatpak install --user ./deskflow-1.20.1-linux-x86_64.flatpak
 ```
 
@@ -385,6 +386,16 @@ Google 账号统一登录
 + Mac 
   	+ Configure Server 控制
   	+ 一段时间可能会掉线 ⭐️ 需优化
+
+#### mac install Tailscale
+不要使用桌面端, 各种问题
+```
+brew install --formula tailscale
+sudo brew services start tailscale # 加入自启服务
+tailscale up
+tailscale status
+
+```
 
 #### mint 如何通过 deskflow 把 ctrl 与  alt 颠倒
 
@@ -651,13 +662,20 @@ update-desktop-database ~/.local/share/applications/
 然后你就可以在 Mint 菜单中搜索到 “IntelliJ IDEA” 和 “PyCharm”，
  或在桌面上双击运行 🎉
 
+#### 六、其他
+
 #### pycharm 导入 setting文件后导致了这个报错￼￼￼
 
 可能是导入的 pycharm  key/vmoptions 导致的错误
 
 ```
+cd ~/.config/JetBrains/PyCharm<版本号>/
 rm -rf pycharm.key pycharm64.vmoptions
 ```
+
+### idea 2025 闪退
+
+kotlin 导致的报错, 装
 
 ### Sublime
 
