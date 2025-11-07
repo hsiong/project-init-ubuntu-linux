@@ -106,6 +106,23 @@ PCI\VEN_10EC&DEV_8126&SUBSYS_XXXX
 
 **`/etc/environment`**：系统级、键值对格式（不支持 shell 语法/变量引用），适合全局 `PATH`、`LANG` 等。
 
+```
+~/.profile
+git config --global http.proxy http://127.0.0.1:7897
+git config --global https.proxy http://127.0.0.1:7897
+
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
+export PATH=$JAVA_HOME/bin:$PATH
+
+# NVM configuration
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# export PATH=$PATH:~/.npm-global/bin 会导致全局安装失败
+```
+
+
+
 ### VIM
 
 ```
@@ -581,8 +598,8 @@ pip3 --version
 
 ### Pycharm & IDEA
 
-+ pycharm - Linux Arm64
-+ IDEA - Linux aarch64
++ pycharm - Linux linux
++ IDEA - Linux x86_64
 
 #### 一、路径确认
 
@@ -604,6 +621,8 @@ pip3 --version
 
 运行以下命令来创建两个快捷方式 👇
 
+> 不需要 xx.sh; 直接使用 xx 启动
+
 1️⃣ IntelliJ IDEA
 
 ```
@@ -613,7 +632,7 @@ Version=1.0
 Type=Application
 Name=IntelliJ IDEA
 Icon=/home/hsiong/code/Software/idea-IU-241.19416.15/bin/idea.png
-Exec=/home/hsiong/code/Software/idea-IU-241.19416.15/bin/idea.sh
+Exec=/home/hsiong/code/Software/idea-IU-241.19416.15/bin/idea
 Comment=JetBrains IntelliJ IDEA
 Categories=Development;IDE;
 Terminal=false
@@ -632,7 +651,7 @@ Version=1.0
 Type=Application
 Name=PyCharm
 Icon=/home/hsiong/code/Software/pycharm-2024.1.7/bin/pycharm.png
-Exec=/home/hsiong/code/Software/pycharm-2024.1.7/bin/pycharm.sh
+Exec=/home/hsiong/code/Software/pycharm-2024.1.7/bin/pycharm
 Comment=JetBrains PyCharm
 Categories=Development;IDE;
 Terminal=false
@@ -688,11 +707,223 @@ rm -rf pycharm.key pycharm64.vmoptions
 
 ### idea 2025 闪退
 
-kotlin 导致的报错, 装
+kotlin 导致的报错, 停用Kotlin, 删除 /idea/plugins/Kotlin/*, 保留 Kotlin 目录, 重新下载即可
 
 ### Sublime
 
+```
+# === 安装 Sublime Text 官方版 ===
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+sudo apt update
+sudo apt install -y sublime-text
 
+# === 创建命令行别名 “sublime” ===
+sudo ln -sf /usr/bin/subl /usr/local/bin/sublime
+
+# === 创建桌面快捷方式 ===
+sudo tee /usr/share/applications/sublime-text.desktop > /dev/null <<'EOF'
+[Desktop Entry]
+Name=Sublime Text
+GenericName=Text Editor
+Comment=Sophisticated text editor for code, markup and prose
+Exec=subl %F
+Terminal=false
+Type=Application
+Icon=sublime-text
+Categories=TextEditor;Development;
+StartupNotify=true
+MimeType=text/plain;
+EOF
+
+# === 复制到桌面并授予执行权限 ===
+cp /usr/share/applications/sublime-text.desktop ~/Desktop/
+chmod +x ~/Desktop/sublime-text.desktop
+
+# === 更新系统菜单缓存 ===
+sudo update-desktop-database
+
+```
+
+### Docker
+
+🧩 一、清理旧源（防止冲突）
+
+```
+sudo rm -f /etc/apt/sources.list.d/docker.listsudo 
+
+rm -f /etc/apt/keyrings/docker.gpg
+```
+
+二、更新系统并安装依赖
+
+```
+sudo apt update
+sudo apt install ca-certificates curl gnupg lsb-release
+```
+
+------
+
+🗝️ 三、添加 Docker 官方 GPG 密钥
+
+```
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+```
+
+> 💡 Mint 基于 Ubuntu，所以使用 Ubuntu 的源。
+
+------
+
+📦 四、添加 Docker 软件源
+
+> ☆☆☆ 这步要先查 lsb_release -a
+
+```
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  noble stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+------
+
+🔄 五、更新并安装 Docker
+
+```
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+------
+
+🚀 六、验证 Docker 是否安装成功
+
+```
+sudo docker ps
+```
+
+若输出类似：
+
+```
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
+
+说明安装成功 ✅
+
+------
+
+👤 七、可选：让当前用户无需 sudo 使用 Docker
+
+```
+sudo usermod -aG docker $USER
+```
+
+然后退出并重新登录终端，让组权限生效。
+
+验证：
+
+```
+docker ps
+```
+
+如果不再提示 “permission denied”，说明配置成功。
+
+------
+
+🧩 八、安装 Docker Compose（旧版）
+
+如果你需要传统的 `docker-compose` 命令：
+
+```
+sudo apt install docker-compose
+```
+
+九、配置国内源
+
++ 代理
+
+  ```
+  sudo mkdir -p /etc/systemd/system/docker.service.d
+  sudo vim /etc/systemd/system/docker.service.d/proxy.conf
+  ```
+
+  ```
+  [Service]
+  Environment="HTTP_PROXY=http://127.0.0.1:7890"
+  Environment="HTTPS_PROXY=http://127.0.0.1:7890"
+  Environment="NO_PROXY=localhost,127.0.0.1,::1"
+  ```
+
+  ```
+  sudo systemctl daemon-reexec
+  sudo systemctl daemon-reload
+  sudo systemctl restart docker
+  systemctl show --property=Environment docker
+  
+  ```
+
++ 国内源
+
+  ```
+  sudo mkdir -p /etc/docker
+  sudo tee /etc/docker/daemon.json <<-'EOF'
+  {
+    "registry-mirrors": [
+      "https://docker.m.daocloud.io",
+      "https://dockerproxy.com",
+      "https://docker.1panel.live"
+    ]
+  }
+  EOF
+  ```
+
+  ```
+  sudo systemctl daemon-reload
+  sudo systemctl restart docker
+  ```
+
+  
+
+#### Claude Code
+
++ https://www.aicodemirror.com/dashboard/official-installation/macos-linux
+
+  ```
+  curl -fsSL https://download.aicodemirror.com/env_deploy/env-install.sh | bash
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  sudo apt install -y nodejs
+  node -v
+  npm -v
+  mkdir ~/.npm-global
+  npm config set prefix '~/.npm-global'
+  
+  sudo npm uninstall -g @anthropic-ai/claude-code
+  sudo npm install -g @anthropic-ai/claude-code
+  claude -v
+  ```
+
+  ```
+  sudo apt-get install jq
+  curl -fsSL https://download.aicodemirror.com/env_deploy/env-deploy.sh | bash -s -- "你的API_KEY"
+  claude -v
+  ```
+
++ https://api.codemirror.codes/about
+
+  ```
+  curl -fsSL https://gitee.com/CoderRouter/scripts/raw/master/install_claude.sh \
+  | sed 's/\r$//' \
+  | bash
+  npm install -g @anthropic-ai/claude-code
+  ```
+  
+  ```
+  curl -fsSL https://gitee.com/CoderRouter/scripts/raw/master/setup_claude_env.sh \
+  | sed 's/\r$//' \
+  | bash -s -- "你的API_KEY"
+  ```
 
 ### 我想让 Guake 完全替代默认终端
 
