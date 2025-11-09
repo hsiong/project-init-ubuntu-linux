@@ -118,10 +118,10 @@ export PATH=$JAVA_HOME/bin:$PATH
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-# export PATH=$PATH:~/.npm-global/bin 会导致全局安装失败
+# export PATH=$PATH:~/.npm-global/bin 不需要, 会导致全局安装失败
 ```
 
-
+> 在 Linux Mint Cinnamon 桌面环境中，你打开文件浏览器（默认是 Nemo）
 
 ### VIM
 
@@ -134,14 +134,37 @@ sudo apt install vim -y
 
 + Clash Verge
   + subscript: Home -> Direct
+  
 + sublime ~/.zshrc
+
 + startup - add application
 
-```
-export https_proxy="http://127.0.0.1:7897"
-#export http_proxy="http://127.0.0.1:7897" 
-export all_proxy=
-```
+  ```
+  export https_proxy="http://127.0.0.1:7897"
+  #export http_proxy="http://127.0.0.1:7897" 
+  export all_proxy=
+  ```
+
++ 自定义规则 -> `Open File`
+
+  ```
+      # ---- OpenAI / ChatGPT 必走代理 ----
+      - DOMAIN-SUFFIX,chatgpt.com,PROXY
+      - DOMAIN-SUFFIX,openai.com,PROXY
+      - DOMAIN-KEYWORD,openai,PROXY
+      - DOMAIN-KEYWORD,chatgpt,PROXY
+      # 鉴权与常见依赖（可选但推荐）
+      - DOMAIN-SUFFIX,auth0.com,PROXY
+      - DOMAIN-SUFFIX,sentry.io,PROXY
+      - DOMAIN-SUFFIX,stripe.com,PROXY
+      # ---- 你的通配/收尾规则再写在下面 ----
+      - GEOIP,CN,DIRECT
+      - MATCH,龙猫云 - TotoroCloud
+  ```
+
+  
+
+  
 
 #### APT
 
@@ -437,64 +460,118 @@ tailscale status
 
 > 未实现, 回家搞
 
-### 输入法 - 百度
+### 输入法 - 谷歌
 
-✅ 一、准备工作：安装 `aptitude`（可选）
-
-```
-sudo apt update
-sudo apt install -y aptitude
-```
-
-`aptitude` 只是 `apt` 的增强界面，也可以直接用 `apt`。
+在 **Linux Mint（基于 Ubuntu 22/24 系列）** 上安装 **Google 拼音输入法（Fcitx 版）**。
+ 下面是完整、稳定的安装方法👇
 
 ------
 
-✅ 二、安装 Fcitx 4 框架（百度输入法依赖的是 Fcitx 4，而不是 Fcitx 5）
+🧩 一、确认输入法框架（必须用 Fcitx 4）
 
-Mint 22 默认没有 Fcitx 4，你需要手动安装：
+Mint 默认使用 `ibus`，而 **Google Pinyin 仅支持 Fcitx 4**。
 
-```
-sudo apt install -y fcitx fcitx-bin fcitx-table fcitx-ui-classic fcitx-config-common fcitx-frontend-gtk3 fcitx-frontend-qt5
-```
-
-> ⚠️ 不要安装 `fcitx5` 系列，会冲突。
-
-------
-
-✅ 三、安装 Qt 环境（旧版 fcitx-baidupinyin 依赖 Qt 5）
-
-Ubuntu 24.04 已弃用 `qt5-default`，用以下包替代：
-
-```
-sudo apt install -y qtbase5-dev qtbase5-dev-tools qtchooser qttools5-dev-tools qml-module-qtquick-controls2
-```
-
-✅ 四、设置输入法框架
-
-运行配置工具选择 Fcitx 为默认输入法系统：
+先切换输入法框架：
 
 ```
 im-config -n fcitx
 ```
 
-注销或重启桌面一次，让 Fcitx 生效。
- 如果右上角仍无小键盘图标，执行：
+如果系统没装 Fcitx，先装上：
+
+```
+sudo apt update
+sudo apt install -y fcitx fcitx-bin fcitx-ui-classic fcitx-table fcitx-config-common \
+  fcitx-frontend-gtk3 fcitx-frontend-qt5
+```
+
+然后重启一次系统或执行：
 
 ```
 fcitx-autostart &
 ```
 
-✅五、添加输入法
+------
 
-打开 Fcitx 配置工具：
+🧰 二、安装 Google 拼音输入法模块
+
+Fcitx 自带 Google 拼音模块，不用额外下载 `.deb`。
+
+```
+sudo apt install -y fcitx-googlepinyin
+```
+
+------
+
+⚙️ 三、添加输入法
+
+打开配置界面：
 
 ```
 fcitx-config-gtk3
 ```
 
-点击 “+” 号 → 搜索 “Baidu Pinyin” → 添加为默认输入法。
- 切换快捷键通常为 `Ctrl + Space`。
+1. 点击 “+”
+2. 搜索 “Google Pinyin”
+3. 选中并添加到输入法列表顶部
+4. 保存后退出
+
+切换快捷键默认是：`Ctrl + Space`（或在 Fcitx 设置里改）。
+
+------
+
+🔠 四、设置环境变量（确保 Fcitx 全局生效）
+
+执行：
+
+```
+grep -q "GTK_IM_MODULE=fcitx" ~/.xprofile 2>/dev/null || cat >> ~/.xprofile <<'EOF'
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+EOF
+```
+
+然后重启系统（或注销再登录）。
+
+------
+
+✅ 五、验证是否生效
+
+执行：
+
+```
+fcitx-diagnose | grep google
+```
+
+应当看到：
+
+```
+Input Method Configurations:
+  Google Pinyin: Enabled
+```
+
+在输入框按 `Ctrl + Space` 试试，就能切换到 Google 拼音输入法。
+
+六、快捷键
+
+你可以生成一个默认配置：
+
+```
+fcitx-configtool
+```
+
+- 打开 GUI 配置器 → 选择 'addon'
+- 找到 "Simplified Chinese....Traditional..." 双击
+- 修改为 `Ctrl+Shift+F` 或 “无(None)”
+
+#### 云拼音
+
+fcitx4 不存在云
+
+#### 快捷键
+
+打开输入法管理器, 关闭所有快捷键; 切换中英文用ctrl
 
 ### Chrome
 
@@ -718,8 +795,9 @@ echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sou
 sudo apt update
 sudo apt install -y sublime-text
 
-# === 创建命令行别名 “sublime” ===
-sudo ln -sf /usr/bin/subl /usr/local/bin/sublime
+# === 改名 “sublime” ===
+sudo mv /usr/bin/subl /usr/bin/sublime
+hash -r
 
 # === 创建桌面快捷方式 ===
 sudo tee /usr/share/applications/sublime-text.desktop > /dev/null <<'EOF'
@@ -727,7 +805,7 @@ sudo tee /usr/share/applications/sublime-text.desktop > /dev/null <<'EOF'
 Name=Sublime Text
 GenericName=Text Editor
 Comment=Sophisticated text editor for code, markup and prose
-Exec=subl %F
+Exec=sublime %F
 Terminal=false
 Type=Application
 Icon=sublime-text
@@ -744,6 +822,23 @@ chmod +x ~/Desktop/sublime-text.desktop
 sudo update-desktop-database
 
 ```
+
+#### 想让 Sublime Text 每次启动时都打开一个“全新的空窗口”，而不是自动恢复上次打开的文件或项目。
+
+这其实是两个设置项控制的行为：hot_exit 和 remember_open_files。
+
+解决方法（永久设置）打开：Preferences → Setting
+
+在右侧（用户设置）里添加或修改以下内容：
+
+```
+{    
+	"hot_exit": false,    
+	"remember_open_files": false
+}
+```
+
+
 
 ### Docker
 
@@ -884,7 +979,25 @@ sudo apt install docker-compose
   sudo systemctl restart docker
   ```
 
-  
+
+### NPM
+
+```
+curl -fsSL https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_22.x/setup_22.x | sudo -E bash -
+
+sudo apt install -y nodejs
+node -v
+npm -v
+npm config set registry https://registry.npmmirror.com
+
+sudo npm install -g pnpm
+pnpm config set proxy http://127.0.0.1:7897
+pnpm config set https-proxy http://127.0.0.1:7897
+pnpm config set registry https://registry.npmmirror.com/
+
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip config set global.proxy http://127.0.0.1:7897
+
+```
 
 #### Claude Code
 
@@ -892,18 +1005,12 @@ sudo apt install docker-compose
 
   ```
   curl -fsSL https://download.aicodemirror.com/env_deploy/env-install.sh | bash
-  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-  sudo apt install -y nodejs
-  node -v
-  npm -v
-  mkdir ~/.npm-global
-  npm config set prefix '~/.npm-global'
   
   sudo npm uninstall -g @anthropic-ai/claude-code
   sudo npm install -g @anthropic-ai/claude-code
   claude -v
   ```
-
+  
   ```
   sudo apt-get install jq
   curl -fsSL https://download.aicodemirror.com/env_deploy/env-deploy.sh | bash -s -- "你的API_KEY"
@@ -925,6 +1032,110 @@ sudo apt install docker-compose
   | bash -s -- "你的API_KEY"
   ```
 
+#### 在设置里**直接封禁写入这些文件**
+
+在 `~/.claude/settings.json`（全局）或项目内的 `.claude/settings.json` 写入对 **Edit/Write** 的拒绝规则即可。规则使用 *gitignore 风格的路径匹配*（相对该 settings 文件路径）：
+
+```
+{
+  "permissions": {
+    "deny": [
+      "Edit(MIGRATION_REPORT.md)",
+      "Write(MIGRATION_REPORT.md)",
+      "Edit(/**/MIGRATION_REPORT*.md)",
+      "Write(/**/MIGRATION_REPORT*.md)",
+      "Edit(/**/migration_report*.md)",
+      "Write(/**/migration_report*.md)",
+      "Edit(/**/ARCHITECTURE.md)",
+      "Write(/**/ARCHITECTURE.md)",
+      "Edit(/**/PROJECT_INTAKE.md)",
+      "Write(/**/PROJECT_INTAKE.md)"
+    ]
+  }
+}
+```
+
+### Github ssh
+
+```
+ssh-keygen -t ed25519 -C "你的邮箱"
+ls -l ~/.ssh
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+vim ~/.ssh/config
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  AddKeysToAgent yes
+  IdentitiesOnly yes
+
+cat ~/.ssh/id_ed25519.pub # 加入 github
+```
+
+```
+ssh-keygen -R github.com  # 清除旧记录（如果有）
+ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
+ssh -T git@github.com  # 按提示重新加入 host key
+```
+
+#### 无法提交
+
+hsiong:base-backend/ (main*) $ git push -u origin HEAD                                                                                                                                                                           [16:39:47] Username for 'https://github.com':    依然提示....
+
+> 注意地址要使用 ssh 而不是 https
+
+### Redis Desktop
+
+```
+#!/bin/bash
+# === 创建 Redis Desktop Manager 启动器 ===
+APP_PATH="/home/hsiong/code/Software/Another-Redis-Desktop-Manager-linux-1.7.1-x86_64.AppImage"
+ICON_PATH="/home/hsiong/.local/share/icons/redis.png"
+DESKTOP_FILE="$HOME/.local/share/applications/another-redis-desktop-manager.desktop"
+DESKTOP_SHORTCUT="$HOME/Desktop/Another-Redis-Desktop-Manager.desktop"
+
+# 创建图标目录
+mkdir -p "$(dirname "$ICON_PATH")"
+
+# https://icon2.cleanpng.com/20180630/zte/kisspng-redis-database-erlang-cache-computer-servers-5b3814aade3601.5242758815304019629102.jpg
+手动下载
+
+# 生成菜单项
+cat << EOF > "$DESKTOP_FILE"
+[Desktop Entry]
+Name=Another Redis Desktop Manager
+Comment=Manage Redis databases with a GUI client
+Exec=env LIBGL_ALWAYS_SOFTWARE=1 $APP_PATH --in-process-gpu
+Icon=$ICON_PATH
+Terminal=false
+Type=Application
+Categories=Development;Database;
+StartupNotify=true
+EOF
+
+# 设置权限
+chmod +x "$DESKTOP_FILE"
+
+# 同步数据库（让菜单立即刷新）
+update-desktop-database ~/.local/share/applications >/dev/null 2>&1
+
+# 复制到桌面（可双击启动）
+cp "$DESKTOP_FILE" "$DESKTOP_SHORTCUT"
+chmod +x "$DESKTOP_SHORTCUT"
+
+echo "✅ 已完成：
+1️⃣ 应用菜单已创建 → 搜索 'Another Redis Desktop Manager'
+2️⃣ 桌面图标已生成 → 双击即可启动
+3️⃣ 启动命令：LIBGL_ALWAYS_SOFTWARE=1 --in-process-gpu
+图标文件路径：$ICON_PATH
+"
+
+```
+
+
+
 ### 我想让 Guake 完全替代默认终端
 
 因为原生 terminal 不支持撤销和重做
@@ -940,8 +1151,6 @@ ctrl + c & ctrl + v 也不支持
 ### BaiduDisk
 
 ### Node(可选)
-
-
 
 # 其他问题
 
