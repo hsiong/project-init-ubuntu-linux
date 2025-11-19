@@ -157,14 +157,14 @@ sudo apt install vim -y
       - DOMAIN-SUFFIX,auth0.com,PROXY
       - DOMAIN-SUFFIX,sentry.io,PROXY
       - DOMAIN-SUFFIX,stripe.com,PROXY
-      # ---- 你的通配/收尾规则再写在下面 ----
-      - GEOIP,CN,DIRECT
+      - 'DOMAIN-SUFFIX,chatgpt.com,CATNET'
+      - 'DOMAIN-SUFFIX,openai.com,CATNET'  # 建议也加上
+      - 'GEOIP,CN,DIRECT,no-resolve' # 防止 GeoIP 规则提前解析域名：
       - MATCH,龙猫云 - TotoroCloud
   ```
-
   
 
-  
++ curl 设置代理
 
 #### APT
 
