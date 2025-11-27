@@ -16,7 +16,7 @@
 + 提前分区 >200GB
 + 安全模式
   + msi: F11
-+ Start  Cinnamon 64-bit
++ Start  Cinnamon 64-bit compatible mode
 
 ## Mint 磁盘分配
 
@@ -77,6 +77,64 @@ Device for boot loader installation:
 > #### 启动失败, 直接进入 grub
 > -> 没找到 EFI, 把硬盘重新插一下试试
 > 
+
+### 重新分区 - GParted
+
+> 前提：已经备份 + 用 U 盘进了 Live 系统。
+
+1. 打开 **GParted**，选对磁盘（比如 `/dev/sda`）。
+
+2. 右键 `/dev/sda5`（/data） → `Resize/Move`： 
+
+   > 注意, 需要分区 unmount
+
+   - 从左边缩小一点（比如减掉 100G 给 /home 用）。
+   - 然后拖动整个分区到最右边，让左边出现 “unallocated”。
+   - 应用（绿色 √）。
+
+3. 右键 `/dev/sda4`（/）→ `Resize/Move`：
+
+   - 不改大小，只把整个分区向右拖，直到它左边紧挨着的就是刚才的 “unallocated” 空间。
+   - 应用。
+
+4. 右键 `/dev/sda3`（/home）→ `Resize/Move`：
+
+   - 把右侧滑块拖到最右边，吃掉全部 “unallocated”。
+   - 应用。
+
+5. 完成后关机 → 拔 U 盘 → 正常从硬盘启动。
+    进系统后：
+
+   ```
+   df -h /home
+   ```
+
+   看 /home 是否变大，系统是否正常。
+
+### 手动 mount
+
+> 格式使用 ext-4; 不能用 exfat
+
+创建目标目录：
+
+```
+sudo mkdir -p /media/hsiong/JF-Disk
+```
+
+手动挂载：
+
+```
+sudo mount /dev/sdb5 /media/hsiong/JF-Disk
+```
+
+一直无法自动mount -> 删除指定行
+
+```
+sudo sublime fstab
+sudo mount -a
+```
+
+
 
 ### 网卡
 
@@ -163,7 +221,6 @@ sudo apt install vim -y
       - MATCH,龙猫云 - TotoroCloud
   ```
   
-
 + curl 设置代理
 
 #### APT
