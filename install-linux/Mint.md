@@ -1193,6 +1193,42 @@ echo "✅ 已完成：
 
 
 
+### 显卡监控 - nvtop
+
+Linux Mint 安装 nvtop
+
+Mint 基于 Ubuntu，可以直接用仓库安装：
+
+```
+sudo apt update
+sudo apt install nvtop
+```
+
+安装完成后，运行：
+
+```
+nvtop
+```
+
+###  **psensor（图形化温度监控）**
+
+Psensor 是 Linux 下最方便的温度监控软件之一。
+
+**1. 安装依赖：lm-sensors**
+
+```
+sudo apt install lm-sensors
+sudo sensors-detect
+```
+
+按提示一路 “Y” 即可。
+
+**2. 安装 Psensor**
+
+```
+sudo apt install psensor
+```
+
 ### 我想让 Guake 完全替代默认终端
 
 因为原生 terminal 不支持撤销和重做
