@@ -156,6 +156,9 @@ PCI\VEN_10EC&DEV_8126&SUBSYS_XXXX
 
 + MTK MT7927 无法识别
 
++ 部分 linux 版本不支持 mtk wifi, 可以使用手机 - usb wifi 
+  `手机 - wifi config - via wifi with usb`, 打开这个设置后, 无需任何配置, 直接使用手机 wifi
+
 ## Install
 
 **`~/.zshrc`**：仅交互式 zsh 打开时执行。放别名/函数/轻量 PATH 追加。
@@ -1308,3 +1311,5 @@ echo "file:///home/$USER/Downloads Downloads" >> ~/.config/gtk-3.0/bookmarks
 
 然后重新打开文件管理器（或按 `F5` 刷新），
  你会看到左侧栏中出现了 “Downloads”。
+
+#### 禁用 tty
