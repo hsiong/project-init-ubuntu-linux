@@ -12,7 +12,7 @@
 + GPT (mbr只支持老款windows)
 + Fat32 / exFat
 + DD Image mode
-  + ISO 适用于 Windows
+  + ISO 只适用于安装 Windows 镜像
 + 提前分区 >200GB
 + 安全模式
   + msi: F11
@@ -832,6 +832,9 @@ update-desktop-database ~/.local/share/applications/
  或在桌面上双击运行 🎉
 
 #### 六、其他
+
+#### scrrensaver/sleep
+set serrensaver -> never
 
 #### pycharm 导入 setting文件后导致了这个报错￼￼￼
 
