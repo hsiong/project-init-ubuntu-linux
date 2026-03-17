@@ -1316,3 +1316,11 @@ echo "file:///home/$USER/Downloads Downloads" >> ~/.config/gtk-3.0/bookmarks
  你会看到左侧栏中出现了 “Downloads”。
 
 #### 禁用 tty
+
+
+# shortcuts
+
+## switch workspace
+add custom shortcut
++ switch to left workspace
++ switch to right workspace
