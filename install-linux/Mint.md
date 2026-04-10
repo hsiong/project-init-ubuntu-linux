@@ -307,9 +307,10 @@ sudo add-apt-repository universe -y & sudo apt update
    > uname-a
    > ```
    >
-   > 下载对应的 extra xxx
-   >
+   > 下载对应的 extra xxx - 点击
    >  https://packages.ubuntu.com/noble/linux-modules-extra-6.14.0-33-generic
+   >  https://security.ubuntu.com/ubuntu/pool/main/l/linux-hwe-6.17/linux-modules-extra-6.17.0-20-generic_6.17.0-20.20~24.04.1_amd64.deb
+   
    >
    > ```
    > cd ~/Downloads
@@ -1315,6 +1316,77 @@ echo "file:///home/$USER/Downloads Downloads" >> ~/.config/gtk-3.0/bookmarks
 然后重新打开文件管理器（或按 `F5` 刷新），
  你会看到左侧栏中出现了 “Downloads”。
 
+#### 无线网卡
+
+直接执行这一套：
+
+```shell
+sudo apt update
+sudo apt install \
+  linux-image-6.17.0-20-generic \
+  linux-modules-6.17.0-20-generic \
+  linux-headers-6.17.0-20-generic \
+  linux-extra-6.17.0-20-generic   # 影响网卡
+sudo reboot
+```
+
+N卡驱动
+
+```
+sudo apt update
+sudo apt install ubuntu-drivers-common
+sudo ubuntu-drivers list
+sudo ubuntu-drivers install
+sudo reboot
+```
+
+重启后确认有没有进新内核：
+
+```
+uname -r
+```
+
+如果输出已经是：
+
+```
+6.17.0-20-generic
+```
+
+那你内核这一步就成了。
+
+然后马上看 DKMS 状态。Mint 官方文档也明确建议：装完新内核后检查 `dkms status`，因为第三方驱动要跟着新内核重新编译。
+
+```
+dkms status
+```
+
+这个最适合你现在这种已经有有线网、想直接装上的情况。按仓库当前 README，步骤就是下面这套：
+
+```
+# https://github.com/jetm/mediatek-mt7927-dkms.git 下载包
+sudo dpkg -i ./mediatek-mt7927-dkms_*.deb 
+sudo modprobe -r mt7925e mt7921e btusb
+sudo modprobe mt7925e btusb
+
+```
+
+验证它有没有真正接管你的 MT7927：
+
+```
+uname -r
+dkms status | grep mediatek
+lspci -nnk -s 04:00.0
+nmcli device status
+ip link show
+dmesg | grep -Ei 'mt7927|mt7925|mt76|firmware|btmtk|btusb'
+```
+
+如果装完 `.deb` 以后你发现 **当前内核没挂上 DKMS**，那再补这一条：
+
+```
+sudo dkms install mediatek-mt7927/2.9
+```
+
 #### 禁用 tty
 
 
@@ -1324,3 +1396,4 @@ echo "file:///home/$USER/Downloads Downloads" >> ~/.config/gtk-3.0/bookmarks
 add custom shortcut
 + switch to left workspace
 + switch to right workspace
+
