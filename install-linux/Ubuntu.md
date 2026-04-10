@@ -369,3 +369,78 @@ https://blog.csdn.net/weixin_47869094/article/details/140512275
   + header-generic
   + extra
 + sudo dpkg -i *.deb
+
+# update 22 -> 24
+```
+# 1) 先确认当前版本
+lsb_release -a
+
+# 2) 先把 22.04 当前系统更新到最新
+sudo apt update
+sudo apt dist-upgrade -o APT::Get::Always-Include-Phased-Updates=true
+
+sudo reboot
+
+# 4) 开始发行版升级
+sudo do-release-upgrade
+
+lsb_release -a
+uname -r
+cat /etc/os-release
+
+sudo apt clean
+sudo apt autoclean
+sudo apt autoremove -y
+
+```
+
+
+
+ Ubuntu’s current APT guidance says the old global `trusted.gpg` fallback is deprecated, and per-source `Signed-By` is the preferred setup. 
+
+```
+sudo cp -a /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%F-%H%M%S) 2>/dev/null || true
+[ -f /etc/apt/sources.list.d/ubuntu.sources ] && sudo mv /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bak.$(date +%F-%H%M%S)
+[ -f /etc/apt/sources.list.d/docker.list ] && sudo cp -a /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.list.bak.$(date +%F-%H%M%S)
+sudo tee /etc/apt/sources.list >/dev/null <<'EOF'
+deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] http://mirrors.tencentyun.com/ubuntu noble main restricted universe multiverse
+deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] http://mirrors.tencentyun.com/ubuntu noble-updates main restricted universe multiverse
+deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] http://mirrors.tencentyun.com/ubuntu noble-backports main restricted universe multiverse
+deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] http://mirrors.tencentyun.com/ubuntu noble-security main restricted universe multiverse
+EOF
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://mirrors.tencentyun.com/docker-ce/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://mirrors.tencentyun.com/docker-ce/linux/ubuntu $(. /etc/os-release && echo ${UBUNTU_CODENAME:-$VERSION_CODENAME}) stable" \
+| sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+sudo mv /etc/apt/sources.list.d/third-party.sources /etc/apt/sources.list.d/third-party.sources.disabled
+sudo apt update
+```
+
+
+
+
+
+## kdump
+
+```
+│ kdump-tools: A new version (/etc/default/kdump-tools.xXcXJB) of configuration file /etc/default/kdump-tools is   │ 
+  │ available, but the version installed currently has been locally modified.                                        │ 
+  │                                                                                                                  │ 
+  │ What do you want to do about modified configuration file kdump-tools?                                            │ 
+  │                                                                                                                  │ 
+  │                               install the package maintainer's version                                           │ 
+  │                               keep the local version currently installed                                         │ 
+  │                               show the differences between the versions                                          │ 
+  │                               show a side-by-side difference between the versions                                │ 
+  │                               start a new shell to examine the situation                                         │ 
+  │                                                                                                                  │ 
+  │                                                                                                                  │ 
+  │                                                      <Ok>
+```
+
+choose `keep the local version currently installed`
+
+## restart
+
+keep default setting & enter
