@@ -444,3 +444,7 @@ choose `keep the local version currently installed`
 ## restart
 
 keep default setting & enter
+
+## error
++ boot failure detected  并且进不去 bios 了 怎么办  
+断电 30s 重启, 
