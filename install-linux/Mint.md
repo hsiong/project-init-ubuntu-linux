@@ -184,6 +184,10 @@ export NVM_DIR="$HOME/.nvm"
 
 > 在 Linux Mint Cinnamon 桌面环境中，你打开文件浏览器（默认是 Nemo）
 
+### Login password
+
+
+
 ### VIM
 
 ```
@@ -1119,6 +1123,10 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip 
 }
 ```
 
+### ssh 免密登录
+
+详见 ssh.md
+
 ### Github ssh
 
 ```
@@ -1316,7 +1324,42 @@ echo "file:///home/$USER/Downloads Downloads" >> ~/.config/gtk-3.0/bookmarks
 然后重新打开文件管理器（或按 `F5` 刷新），
  你会看到左侧栏中出现了 “Downloads”。
 
-#### 无线网卡
+#### 无线网卡 - 升级内核
+
+```
+# 查看所有内核
+uname -r
+dpkg -l | grep -E 'linux-(image|modules|headers).*(6\.17\.0-(6|20)|generic-hwe-24\.04)'
+```
+
+
+
++ 6.17.0-6
+
+```
+mkdir -p ~/kernel-6.17.0-6
+cd ~/kernel-6.17.0-6
+
+wget https://security.ubuntu.com/ubuntu/pool/main/l/linux/linux-modules-6.17.0-6-generic_6.17.0-6.6_amd64.deb
+wget https://security.ubuntu.com/ubuntu/pool/main/l/linux-signed/linux-image-6.17.0-6-generic_6.17.0-6.6_amd64.deb
+wget https://security.ubuntu.com/ubuntu/pool/main/l/linux/linux-headers-6.17.0-6_6.17.0-6.6_all.deb
+wget https://security.ubuntu.com/ubuntu/pool/main/l/linux/linux-headers-6.17.0-6-generic_6.17.0-6.6_amd64.deb
+
+
+sudo dpkg -i \
+  linux-headers-6.17.0-6_6.17.0-6.6_all.deb \
+  linux-headers-6.17.0-6-generic_6.17.0-6.6_amd64.deb \
+  linux-modules-6.17.0-6-generic_6.17.0-6.6_amd64.deb \
+  linux-image-6.17.0-6-generic_6.17.0-6.6_amd64.deb
+
+sudo apt -f install
+
+sudo dkms autoinstall -k 6.17.0-6-generic
+```
+
+
+
++ 6.17.0-20
 
 直接执行这一套：
 
@@ -1326,11 +1369,22 @@ sudo apt install \
   linux-image-6.17.0-20-generic \
   linux-modules-6.17.0-20-generic \
   linux-headers-6.17.0-20-generic \
-  linux-extra-6.17.0-20-generic   # 影响网卡
+  linux-modules-extra-6.17.0-20-generic   # 影响网卡
 sudo reboot
+# 重启后确认有没有进新内核：
+uname -r
+# 如果输出已经是： 6.17.0-20-generic
+
+
 ```
 
+
+
 N卡驱动
+
+```
+sudo reboot
+```
 
 ```
 sudo apt update
@@ -1338,18 +1392,6 @@ sudo apt install ubuntu-drivers-common
 sudo ubuntu-drivers list
 sudo ubuntu-drivers install
 sudo reboot
-```
-
-重启后确认有没有进新内核：
-
-```
-uname -r
-```
-
-如果输出已经是：
-
-```
-6.17.0-20-generic
 ```
 
 那你内核这一步就成了。
