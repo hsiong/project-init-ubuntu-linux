@@ -2,23 +2,6 @@ https://www.jianshu.com/p/b294e9da09ad
 
 ## ssh修改登录端口禁止密码登录并免密登录
 
-[![img](https://cdn2.jianshu.io/assets/default_avatar/3-9a2bcc21a5d89e21dafc73b39dc5f582.jpg)](https://www.jianshu.com/u/2d6754d78777)
-
-[何建博桑](https://www.jianshu.com/u/2d6754d78777)IP属地: 四川
-
-0.7122016.12.11 20:38:25字数 718阅读 41,712
-
-------
-
-author: hjb2722404
-head: [https://avatars1.githubusercontent.com/u/10215241?v=3&s=460](https://link.jianshu.com/?t=https://avatars1.githubusercontent.com/u/10215241?v=3&s=460)
-date: 2016-12-10
-title: ssh修改登录端口禁止密码登录并免密登录
-tags: : SSH linx远程
-category: tech-linux
-status: publish
-summary: 本文记录在CentOS7中修改ssh登录端口，免密登录ssh以及ssh禁止口令登录的方法，最后达到保证服务器安全的目的。
-
 ------
 
 ### 1.修改ssh登录端口
