@@ -1,6 +1,25 @@
 https://www.jianshu.com/p/b294e9da09ad
 
-## ssh修改登录端口禁止密码登录并免密登录
+# install ssh
+
+If you can access `172.16.67.85` locally, through console, KVM, VMware/Proxmox console, or another management channel, run on that machine:
+
+```
+sudo systemctl status ssh
+sudo systemctl status sshd
+sudo ss -tlnp | grep :22
+```
+
+On Ubuntu / Debian / Mint, if SSH server is missing or stopped:
+
+```
+sudo apt update
+sudo apt install -y openssh-server
+sudo systemctl enable --now ssh
+sudo systemctl status ssh
+```
+
+## ssh修改登录端口禁止密码登录
 
 ------
 
@@ -56,7 +75,7 @@ $ systemctl restart sshd.service
 
 此时如果再使用22端口进行ssh连接，就会报错，用60022端口连接才可以建立。
 
-### 2.免密登录
+## 免密登录
 
 SSH免密登录利用了rsa密钥对匹配的原理，可以允许用户从本地不用密码就可以访问到远程主机，让我们来看看怎么做。
 
@@ -85,7 +104,7 @@ $ cat ~/.ssh/id_rsa_pub
 复制得到的公钥字符串，在远程服务器上编辑authorized_keys文件：
 
 ```shell
-$ vi .ssh/authorized_keys
+$ vim .ssh/authorized_keys
 ```
 
 将刚刚得到的本地公钥字符串添加到该文件的末尾（如果是新建的文件就直接添加）
@@ -101,17 +120,19 @@ $chmod 600 .ssh/authorized_keys
 编辑远程服务器上的`sshd_config`文件：
 
 ```shell
-$vi /etc/ssh/sshd_config
+sudo vim /etc/ssh/sshd_config
 ```
 
 找到如下选项并修改(通常情况下，前两项默认为no，地三项如果与此处不符，以此处为准)：
 
 ```shell
 #启用密钥验证
-RSAAuthentication yes
 PubkeyAuthentication yes
 #指定公钥数据库文件
 AuthorsizedKeysFile.ssh/authorized_keys
+
+# 没有就不用设置
+RSAAuthentication yes
 ```
 
 编辑保存完成后，重启ssh服务使得新配置生效：
