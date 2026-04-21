@@ -1455,3 +1455,7 @@ add custom shortcut
 + switch to left workspace
 + switch to right workspace
 
+## show all application
++ ctrl + alt + down
+
+
