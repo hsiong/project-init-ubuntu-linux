@@ -418,6 +418,16 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
   ```
   source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  
+  # print zsh -- 安装 pokemonsay 则无需配置
+  print -P "%F{cyan}
+  ███████╗███████╗██╗  ██╗
+  ╚══███╔╝██╔════╝██║  ██║
+    ███╔╝ ███████╗███████║
+   ███╔╝  ╚════██║██╔══██║
+  ███████╗███████║██║  ██║
+  ╚══════╝╚══════╝╚═╝  ╚═╝
+  %f"
   ```
 
 > `plugins=(git) `改为 `plugins=()`
