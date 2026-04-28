@@ -180,7 +180,25 @@ $ systemctl restart sshd.service
 【社区内容提示】社区部分内容疑似由AI辅助生成，浏览时请结合常识与多方信息审慎甄别。
 平台声明：文章内容（如有图片或视频亦包括在内）由作者上传并发布，文章内容仅代表作者本人观点，简书系信息发布平台，仅提供信息存储服务。
 
+# ssh port
 
+## `ssh -L`: local forwarding
+
+**Local machine opens a port. Traffic goes to the remote side.**
+
+```
+ssh -N -L 18789:127.0.0.1:18789 user@ssh_server
+
+```
+
+## `ssh -R`: remote forwarding
+
+**Remote server opens a port. Traffic goes back to your local side.**
+
+```
+ssh -N -R 127.0.0.1:7890:127.0.0.1:7890 user@remote-server
+
+```
 
 # ssh 基础
 ## 使用SSH从服务器下载或上传文件
@@ -288,3 +306,4 @@ Host *
     ServerAliveInterval 60
     ServerAliveCountMax 5
 ```
+
