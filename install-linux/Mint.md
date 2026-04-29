@@ -493,13 +493,17 @@ flatpak run org.deskflow.deskflow
 
 #### Tailscale
 
+
 Google 账号统一登录
 
 实现跨网端控制
 
 + Linux
+  + `sudo apt-get install -y tailscale`
   + `sudo tailscale up`  
   + 输入 Tailscale Machine Ip
+  + autostart  `sudo systemctl enable --now tailscaled`
+  + `sudo systemctl disable tailscaled`
 
 + Mac 
   	+ Configure Server 控制
