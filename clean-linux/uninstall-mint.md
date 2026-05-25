@@ -1,9 +1,13 @@
 
 
+# codex 
+
+# gemini
+
+# antigravity
 
 
-
-# clash verge
+# clash verge + config
 
 # idea & pycharm 
 
@@ -12,9 +16,7 @@
 
 # chrome
 
-# codex 
 
-# gemini
 
 # wechat
 
