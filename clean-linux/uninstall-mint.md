@@ -10,7 +10,7 @@
 # clash verge + config
 
 # idea & pycharm 
-
+## jetbrain crack
 
 # github
 
@@ -23,6 +23,8 @@
 # sunlogin
 
 # wps
+
+
 
 
 # sing-box
