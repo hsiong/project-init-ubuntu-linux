@@ -414,6 +414,143 @@ sudo update-desktop-database
 
 https://github.com/hsiong/learning-my-note/tree/main/tool/system/vps-singbox
 
+### 输入法 - 谷歌
+
+在 **Linux Mint（基于 Ubuntu 22/24 系列）** 上安装 **Google 拼音输入法（Fcitx 版）**。
+ 下面是完整、稳定的安装方法👇
+
+------
+
+🧩 一、确认输入法框架（必须用 Fcitx 4）
+
+Mint 默认使用 `ibus`，而 **Google Pinyin 仅支持 Fcitx 4**。
+
+先切换输入法框架：
+
+```
+im-config -n fcitx
+```
+
+如果系统没装 Fcitx，先装上：
+
+```
+sudo apt update
+sudo apt install -y fcitx fcitx-bin fcitx-ui-classic fcitx-table fcitx-config-common \
+  fcitx-frontend-gtk3 fcitx-frontend-qt5
+```
+
+然后重启一次系统或执行：
+
+```
+fcitx-autostart &
+```
+
+------
+
+🧰 二、安装 Google 拼音输入法模块
+
+Fcitx 自带 Google 拼音模块，不用额外下载 `.deb`。
+
+```
+sudo apt install -y fcitx-googlepinyin
+```
+
+------
+
+⚙️ 三、添加输入法
+
+打开配置界面：
+
+```
+fcitx-config-gtk3
+```
+
+1. 点击 “+”
+2. 搜索 “Google Pinyin”
+3. 选中并添加到输入法列表顶部
+4. 保存后退出
+
+切换快捷键默认是：`Ctrl + Space`（或在 Fcitx 设置里改）。
+
+------
+
+🔠 四、设置环境变量（确保 Fcitx 全局生效）
+
+执行：
+
+```
+grep -q "GTK_IM_MODULE=fcitx" ~/.xprofile 2>/dev/null || cat >> ~/.xprofile <<'EOF'
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+EOF
+```
+
+然后重启系统（或注销再登录）。
+
+------
+
+✅ 五、验证是否生效
+
+执行：
+
+```
+fcitx-diagnose | grep google
+```
+
+应当看到：
+
+```
+Input Method Configurations:
+  Google Pinyin: Enabled
+```
+
+在输入框按 `Ctrl + Space` 试试，就能切换到 Google 拼音输入法。
+
+六、快捷键
+
+你可以生成一个默认配置：
+
+```
+fcitx-configtool
+```
+
+- 打开 GUI 配置器 → 选择 'addon'
+- 找到 "Simplified Chinese....Traditional..." 双击
+- 修改为 `Ctrl+Shift+F` 或 “无(None)”
+
+#### 云拼音
+
+fcitx4 不存在云
+
+#### 快捷键
+
+打开输入法管理器, 关闭所有快捷键; 切换中英文用ctrl
+
+### Chrome
+
++ 注释掉 Google Chrome 源
+
+```
+sudo xed /etc/apt/sources.list.d/google-chrome.list
+```
+
+改成：
+
+```
+# deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
+```
+
++ 1106/180558.090845:ERROR:third_party/crashpad/crashpad/snapshot/elf/elf_dynamic_array_reader.h:64 tag not found
+
+```
+sudo apt update
+sudo apt install --reinstall libnss3 libatk-bridge2.0-0 libatspi2.0-0 libdrm2 \
+  libx11-6 libx11-xcb1 libxkbcommon0 libgtk-3-0
+sudo apt -f install
+sudo apt full-upgrade
+```
+
 ### 显卡驱动
 
 > 适用于 4090/5090 新显卡, 需要重新安装
@@ -575,142 +712,6 @@ tailscale status
 | ctrl    | ctrl |
 
 > 未实现, 回家搞
-
-### 输入法 - 谷歌
-
-在 **Linux Mint（基于 Ubuntu 22/24 系列）** 上安装 **Google 拼音输入法（Fcitx 版）**。
- 下面是完整、稳定的安装方法👇
-
-------
-
-🧩 一、确认输入法框架（必须用 Fcitx 4）
-
-Mint 默认使用 `ibus`，而 **Google Pinyin 仅支持 Fcitx 4**。
-
-先切换输入法框架：
-
-```
-im-config -n fcitx
-```
-
-如果系统没装 Fcitx，先装上：
-
-```
-sudo apt update
-sudo apt install -y fcitx fcitx-bin fcitx-ui-classic fcitx-table fcitx-config-common \
-  fcitx-frontend-gtk3 fcitx-frontend-qt5
-```
-
-然后重启一次系统或执行：
-
-```
-fcitx-autostart &
-```
-
-------
-
-🧰 二、安装 Google 拼音输入法模块
-
-Fcitx 自带 Google 拼音模块，不用额外下载 `.deb`。
-
-```
-sudo apt install -y fcitx-googlepinyin
-```
-
-------
-
-⚙️ 三、添加输入法
-
-打开配置界面：
-
-```
-fcitx-config-gtk3
-```
-
-1. 点击 “+”
-2. 搜索 “Google Pinyin”
-3. 选中并添加到输入法列表顶部
-4. 保存后退出
-
-切换快捷键默认是：`Ctrl + Space`（或在 Fcitx 设置里改）。
-
-------
-
-🔠 四、设置环境变量（确保 Fcitx 全局生效）
-
-执行：
-
-```
-grep -q "GTK_IM_MODULE=fcitx" ~/.xprofile 2>/dev/null || cat >> ~/.xprofile <<'EOF'
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS="@im=fcitx"
-EOF
-```
-
-然后重启系统（或注销再登录）。
-
-------
-
-✅ 五、验证是否生效
-
-执行：
-
-```
-fcitx-diagnose | grep google
-```
-
-应当看到：
-
-```
-Input Method Configurations:
-  Google Pinyin: Enabled
-```
-
-在输入框按 `Ctrl + Space` 试试，就能切换到 Google 拼音输入法。
-
-六、快捷键
-
-你可以生成一个默认配置：
-
-```
-fcitx-configtool
-```
-
-- 打开 GUI 配置器 → 选择 'addon'
-- 找到 "Simplified Chinese....Traditional..." 双击
-- 修改为 `Ctrl+Shift+F` 或 “无(None)”
-
-#### 云拼音
-
-fcitx4 不存在云
-
-#### 快捷键
-
-打开输入法管理器, 关闭所有快捷键; 切换中英文用ctrl
-
-### Chrome
-
-+ 注释掉 Google Chrome 源
-
-```
-sudo xed /etc/apt/sources.list.d/google-chrome.list
-```
-
-改成：
-
-```
-# deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
-```
-
-+ 1106/180558.090845:ERROR:third_party/crashpad/crashpad/snapshot/elf/elf_dynamic_array_reader.h:64 tag not found
-```
-sudo apt update
-sudo apt install --reinstall libnss3 libatk-bridge2.0-0 libatspi2.0-0 libdrm2 \
-  libx11-6 libx11-xcb1 libxkbcommon0 libgtk-3-0
-sudo apt -f install
-sudo apt full-upgrade
-```
 
 ### Typora
 
