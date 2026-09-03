@@ -519,7 +519,7 @@ Input Method Configurations:
 
 六、快捷键
 
-
+打开输入法管理器, 关闭所有快捷键; 切换中英文用ctrl
 
 ```
 fcitx-configtool
@@ -535,10 +535,6 @@ fcitx-configtool
 #### 云拼音
 
 fcitx4 不存在云
-
-#### 快捷键
-
-打开输入法管理器, 关闭所有快捷键; 切换中英文用ctrl
 
 ### Chrome
 
