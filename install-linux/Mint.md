@@ -457,6 +457,16 @@ sudo apt install -y fcitx-googlepinyin
 
 ------
 
+**重启 Fcitx 进程（必做）**
+
+安装新输入法模块后，必须重启 Fcitx 才能加载新插件，终端执行：
+
+```
+fcitx -r
+```
+
+> 必须 logout 
+
 ⚙️ 三、添加输入法
 
 打开配置界面：
@@ -509,15 +519,18 @@ Input Method Configurations:
 
 六、快捷键
 
-你可以生成一个默认配置：
+
 
 ```
 fcitx-configtool
 ```
 
+- `Extra key` => `Disabled`
+- ... 
 - 打开 GUI 配置器 → 选择 'addon'
-- 找到 "Simplified Chinese....Traditional..." 双击
-- 修改为 `Ctrl+Shift+F` 或 “无(None)”
+  - 找到 "Simplified Chinese....Traditional..." 双击
+  - 修改为 `Ctrl+Shift+F` 或 “无(None)”
+
 
 #### 云拼音
 
