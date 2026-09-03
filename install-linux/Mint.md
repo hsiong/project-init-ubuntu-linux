@@ -26,7 +26,7 @@
 | ---------------- | ----------- | -------- | -------- | -------------------------- |
 | EFI 分区         | `/boot/efi` | FAT32    | 512 MB   | 系统引导分区（UEFI 必需）  |
 | 交换空间（Swap） | 无挂载点    | swap     | 4–8 GB   | 系统休眠/虚拟内存          |
-| 家目录分区       | `/home`     | ext4     | 200 GB以上    | 存放用户文件, 包括各类               |
+| 家目录分区       | `/home`     | ext4     | 400 GB以上   | 存放用户文件, 包括各类               |
 | 根分区           | `/`         | ext4     | 其余全部 | 系统文件及软件(apt, deb等) |
 
 🧠 **Primary（主分区）**：MBR 结构中可以直接启动的分区（最多 4 个）
@@ -186,51 +186,9 @@ export NVM_DIR="$HOME/.nvm"
 
 ### Login password
 
-
-
-### VIM
-
-```
-sudo apt update
-sudo apt install vim -y
-```
-
-### VPN
-
-+ Clash Verge
-  + subscript: Home -> Direct
-  
-+ sublime ~/.zshrc
-
-+ startup - add application
-
-  ```
-  export https_proxy="http://127.0.0.1:7897"
-  #export http_proxy="http://127.0.0.1:7897" 
-  export all_proxy=
-  ```
-
-+ 自定义规则 -> `Open File`
-
-  ```
-      # ---- OpenAI / ChatGPT 必走代理 ----
-      - DOMAIN-SUFFIX,chatgpt.com,PROXY
-      - DOMAIN-SUFFIX,openai.com,PROXY
-      - DOMAIN-KEYWORD,openai,PROXY
-      - DOMAIN-KEYWORD,chatgpt,PROXY
-      # 鉴权与常见依赖（可选但推荐）
-      - DOMAIN-SUFFIX,auth0.com,PROXY
-      - DOMAIN-SUFFIX,sentry.io,PROXY
-      - DOMAIN-SUFFIX,stripe.com,PROXY
-      - 'DOMAIN-SUFFIX,chatgpt.com,CATNET'
-      - 'DOMAIN-SUFFIX,openai.com,CATNET'  # 建议也加上
-      - 'GEOIP,CN,DIRECT,no-resolve' # 防止 GeoIP 规则提前解析域名：
-      - MATCH,龙猫云 - TotoroCloud
-  ```
-  
-+ curl 设置代理
-
 #### APT
+
+First use `Software Sources` to switch the mirror to a domestic one. After installation and setting up the proxy, switch to the international mirror.
 
 用代理, 国内源差的东西太多了
 
@@ -257,82 +215,16 @@ Acquire::https::Proxy "http://127.0.0.1:7897/";
 sudo apt update
 ```
 
-### 显卡驱动
+### VIM
 
-> 适用于 4090/5090 新显卡, 需要重新安装
-
-1. **开机时，出现 GRUB 启动菜单：**
-    一般会看到：
-
-   ```
-   Linux Mint 22.1 Cinnamon
-   Advanced options for Linux Mint 22.1 Cinnamon
-   ```
-
-   如果没出现这个菜单，就在开机时 **反复按 `Shift`（BIOS 机）或 `Esc`（UEFI 机）**。
-
-2. **选中要启动的那一行（通常是第一个）**，但不要按回车。
-    然后按下键盘上的 **`e`**（编辑）键。
-    → 你会看到一个黑底白字的文本编辑界面。
-
-3. **找到这一行：**
-
-   ```
-   linux   /boot/vmlinuz-... root=UUID=xxxxxx ro quiet splash
-   ```
-
-   （重点在 `quiet splash`）
-
-4. **在这行最后面加上：**
-
-   ```
-   nomodeset
-   ```
-
-   ⚠️ 注意：与前面之间留一个空格，比如：
-
-   ```
-   ... ro quiet splash nomodeset
-   ```
-
-5. 按下 **F10** 或 **Ctrl + X** 启动。
-
-   👉 这次系统会用“兼容模式”启动，不加载显卡驱动。
-    进入桌面后你就可以安装官方 NVIDIA 驱动。
-
-6. 安装驱动
-
-   > 千万不要执行 `sudo ubuntu-drivers autoinstall `, 会导致各种驱动异常
-   >
-   > 万一执行了, 那么
-   >
-   > ```
-   > uname-a
-   > ```
-   >
-   > 下载对应的 extra xxx - 点击
-   >  https://packages.ubuntu.com/noble/linux-modules-extra-6.14.0-33-generic
-   >  https://security.ubuntu.com/ubuntu/pool/main/l/linux-hwe-6.17/linux-modules-extra-6.17.0-20-generic_6.17.0-20.20~24.04.1_amd64.deb
-   
-   >
-   > ```
-   > cd ~/Downloads
-   > sudo dpkg -i linux-modules-extra-6.14.0-33-generic_*.deb
-   > sudo update-initramfs -u
-   > sudo reboot
-   > lspci -nnk | grep -A3 -i eth
-   > ```
-
-   ```
-   sudo apt update
-   # 不需要 graphics-drivers PPA，Ubuntu 官方仓库现在已经内置主流 NVIDIA 驱动（550/560）
-   sudo apt install nvidia-driver-550 -y
-   sudo reboot
-   ```
+```
+sudo apt update
+sudo apt install vim -y
+```
 
 ### Mint Panel 调整
 
-move; size
+`Panel Setting` -> move; size
 
 > reboot
 
@@ -410,24 +302,14 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 - 常见插件（自动补全 / 高亮）：
 
   ```
-  sudo apt install zsh-autosuggestions zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-autosuggestions.git ~/.oh-my-zsh/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
   ```
 
   然后在 `~/.zshrc` 中添加：
 
   ```
-  source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  
-  # print zsh -- 安装 pokemonsay 则无需配置
-  print -P "%F{cyan}
-  ███████╗███████╗██╗  ██╗
-  ╚══███╔╝██╔════╝██║  ██║
-    ███╔╝ ███████╗███████║
-   ███╔╝  ╚════██║██╔══██║
-  ███████╗███████║██║  ██║
-  ╚══════╝╚══════╝╚═╝  ╚═╝
-  %f"
+  plugins=(zsh-autosuggestions zsh-syntax-highlighting)
   ```
 
 > `plugins=(git) `改为 `plugins=()`
@@ -447,6 +329,160 @@ cd pokemonsay
 fortune | pokemonsay
 source ~/.zshrc
 ```
+
++ `source ~/.zshrc`
+
+### Sublime
+
+```
+# === 安装 Sublime Text 官方版 ===
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+sudo apt update
+sudo apt install -y sublime-text
+
+# === 改名 “sublime” ===
+sudo mv /usr/bin/subl /usr/bin/sublime
+hash -r
+
+# === 创建桌面快捷方式 ===
+sudo tee /usr/share/applications/sublime-text.desktop > /dev/null <<'EOF'
+[Desktop Entry]
+Name=Sublime Text
+GenericName=Text Editor
+Comment=Sophisticated text editor for code, markup and prose
+Exec=sublime %F
+Terminal=false
+Type=Application
+Icon=sublime-text
+Categories=TextEditor;Development;
+StartupNotify=true
+MimeType=text/plain;
+EOF
+
+# === 复制到桌面并授予执行权限 ===
+cp /usr/share/applications/sublime-text.desktop ~/Desktop/
+chmod +x ~/Desktop/sublime-text.desktop
+
+# === 更新系统菜单缓存 ===
+sudo update-desktop-database
+
+```
+
+#### 想让 Sublime Text 每次启动时都打开一个“全新的空窗口”，而不是自动恢复上次打开的文件或项目。
+
+这其实是两个设置项控制的行为：hot_exit 和 remember_open_files。
+
+解决方法（永久设置）打开：Preferences → Setting
+
+在右侧（用户设置）里添加或修改以下内容：
+
+```
+{    
+	"hot_exit": false,    
+	"remember_open_files": false
+}
+```
+
+### VPN - singbox 
+
+**Configure the VPN first, then proceed with operations.**
+
+### 
+
+```
++ Clash Verge
+
+  + subscript: Home -> Direct
+
++ sublime ~/.zshrc
+
++ startup - add application
+
+  ```
+  export https_proxy="http://127.0.0.1:7890"
+  #export http_proxy="http://127.0.0.1:7890" 
+  export all_proxy=
+  ```
+
++ curl 设置代理
+```
+
+
+
+https://github.com/hsiong/learning-my-note/tree/main/tool/system/vps-singbox
+
+### 显卡驱动
+
+> 适用于 4090/5090 新显卡, 需要重新安装
+
+1. **开机时，出现 GRUB 启动菜单：**
+   一般会看到：
+
+   ```
+   Linux Mint 22.1 Cinnamon
+   Advanced options for Linux Mint 22.1 Cinnamon
+   ```
+
+   如果没出现这个菜单，就在开机时 **反复按 `Shift`（BIOS 机）或 `Esc`（UEFI 机）**。
+
+2. **选中要启动的那一行（通常是第一个）**，但不要按回车。
+   然后按下键盘上的 **`e`**（编辑）键。
+   → 你会看到一个黑底白字的文本编辑界面。
+
+3. **找到这一行：**
+
+   ```
+   linux   /boot/vmlinuz-... root=UUID=xxxxxx ro quiet splash
+   ```
+
+   （重点在 `quiet splash`）
+
+4. **在这行最后面加上：**
+
+   ```
+   nomodeset
+   ```
+
+   ⚠️ 注意：与前面之间留一个空格，比如：
+
+   ```
+   ... ro quiet splash nomodeset
+   ```
+
+5. 按下 **F10** 或 **Ctrl + X** 启动。
+
+   👉 这次系统会用“兼容模式”启动，不加载显卡驱动。
+    进入桌面后你就可以安装官方 NVIDIA 驱动。
+
+6. 安装驱动
+
+   > 千万不要执行 `sudo ubuntu-drivers autoinstall `, 会导致各种驱动异常
+   >
+   > 万一执行了, 那么
+   >
+   > ```
+   > uname-a
+   > ```
+   >
+   > 下载对应的 extra xxx - 点击
+   > https://packages.ubuntu.com/noble/linux-modules-extra-6.14.0-33-generic
+   > https://security.ubuntu.com/ubuntu/pool/main/l/linux-hwe-6.17/linux-modules-extra-6.17.0-20-generic_6.17.0-20.20~24.04.1_amd64.deb
+
+   >```
+   >cd ~/Downloads
+   >sudo dpkg -i linux-modules-extra-6.14.0-33-generic_*.deb
+   >sudo update-initramfs -u
+   >sudo reboot
+   >lspci -nnk | grep -A3 -i eth
+   >```
+
+   ```
+   sudo apt update
+   # 不需要 graphics-drivers PPA，Ubuntu 官方仓库现在已经内置主流 NVIDIA 驱动（550/560）
+   sudo apt install nvidia-driver-550 -y
+   sudo reboot
+   ```
 
 ### Git
 
@@ -869,58 +905,6 @@ rm -rf pycharm.key pycharm64.vmoptions
 ### idea 2025 闪退
 
 kotlin 导致的报错, 停用Kotlin, 删除 /idea/plugins/Kotlin/*, 保留 Kotlin 目录, 重新下载即可
-
-### Sublime
-
-```
-# === 安装 Sublime Text 官方版 ===
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-sudo apt update
-sudo apt install -y sublime-text
-
-# === 改名 “sublime” ===
-sudo mv /usr/bin/subl /usr/bin/sublime
-hash -r
-
-# === 创建桌面快捷方式 ===
-sudo tee /usr/share/applications/sublime-text.desktop > /dev/null <<'EOF'
-[Desktop Entry]
-Name=Sublime Text
-GenericName=Text Editor
-Comment=Sophisticated text editor for code, markup and prose
-Exec=sublime %F
-Terminal=false
-Type=Application
-Icon=sublime-text
-Categories=TextEditor;Development;
-StartupNotify=true
-MimeType=text/plain;
-EOF
-
-# === 复制到桌面并授予执行权限 ===
-cp /usr/share/applications/sublime-text.desktop ~/Desktop/
-chmod +x ~/Desktop/sublime-text.desktop
-
-# === 更新系统菜单缓存 ===
-sudo update-desktop-database
-
-```
-
-#### 想让 Sublime Text 每次启动时都打开一个“全新的空窗口”，而不是自动恢复上次打开的文件或项目。
-
-这其实是两个设置项控制的行为：hot_exit 和 remember_open_files。
-
-解决方法（永久设置）打开：Preferences → Setting
-
-在右侧（用户设置）里添加或修改以下内容：
-
-```
-{    
-	"hot_exit": false,    
-	"remember_open_files": false
-}
-```
 
 
 
@@ -1461,5 +1445,4 @@ add custom shortcut
 
 ## show all application
 + ctrl + alt + down
-
 
