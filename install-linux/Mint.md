@@ -865,6 +865,7 @@ sudo ln -s /usr/bin/pip3 /usr/local/bin/pip
 
 # pip 清华源
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple 
+pip --version
 ```
 
 `python3-venv`: 创建虚拟环境
