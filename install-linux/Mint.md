@@ -169,8 +169,8 @@ PCI\VEN_10EC&DEV_8126&SUBSYS_XXXX
 
 ```
 ~/.profile
-git config --global http.proxy http://127.0.0.1:7897
-git config --global https.proxy http://127.0.0.1:7897
+git config --global http.proxy http://127.0.0.1:7890
+git config --global https.proxy http://127.0.0.1:7890
 
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 export PATH=$JAVA_HOME/bin:$PATH
@@ -1040,11 +1040,17 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 
 > 💡 Mint 基于 Ubuntu，所以使用 Ubuntu 的源。
 
+验证公钥文件确实存在
+
+```
+ls -l /etc/apt/keyrings/docker.gpg
+```
+
 ------
 
 📦 四、添加 Docker 软件源
 
-> ☆☆☆ 这步要先查 lsb_release -a
+> ☆☆☆ 这步要先查 /etc/os-release ; `noble` 对应 `/etc/os-release && ehco "$UBUNTU_CODENAME"`
 
 ```
 echo \
@@ -1084,7 +1090,7 @@ This message shows that your installation appears to be working correctly.
 👤 七、可选：让当前用户无需 sudo 使用 Docker
 
 ```
-sudo usermod -aG docker $USER
+
 ```
 
 然后退出并重新登录终端，让组权限生效。
@@ -1106,8 +1112,6 @@ docker ps
 ```
 sudo apt install docker-compose
 ```
-
-九、配置国内源
 
 + 代理
 
@@ -1131,7 +1135,7 @@ sudo apt install docker-compose
   
   ```
 
-+ 国内源  20260412
++ 国内源  20260412 已废弃
 
   ```
   sudo mkdir -p /etc/docker
@@ -1144,12 +1148,11 @@ sudo apt install docker-compose
     ]
   }
   EOF
-  ```
-
-  ```
+  
   sudo systemctl daemon-reload
   sudo systemctl restart docker
   ```
+  
 
 
 ### NPM 
@@ -1176,9 +1179,9 @@ sudo npm install -g pnpm
 pnpm config set registry https://registry.npmmirror.com/
 
 # 设置代理
-pnpm config set proxy http://127.0.0.1:7897
-pnpm config set https-proxy http://127.0.0.1:7897
-pip config set global.proxy http://127.0.0.1:7897
+pnpm config set proxy http://127.0.0.1:7890
+pnpm config set https-proxy http://127.0.0.1:7890
+pip config set global.proxy http://127.0.0.1:7890
 
 # 国际源
 npm config set registry=https://registry.npmjs.org
