@@ -895,6 +895,26 @@ pip --version
 
 ------
 
+```
+VM: 
+
+-Xmx3548m
+-XX:MaxMetaspaceSize=1024m
+-XX:+UseG1GC
+-XX:CICompilerCount=8
+-Dsun.tools.attach.tmp.only=true
+
+
+-Dhttp.proxyHost
+-Dhttp.proxyPort
+-Dhttps.proxyHost
+-Dhttps.proxyPort
+-DsocksProxyHost
+-DsocksProxyPort
+```
+
+
+
 #### 🧩 二、生成桌面图标（.desktop 文件）
 
 运行以下命令来创建两个快捷方式 👇
@@ -975,7 +995,7 @@ update-desktop-database ~/.local/share/applications/
 #### 六、其他
 
 #### scrrensaver/sleep
-set serrensaver -> never
+set scrrensaver -> never
 
 #### pycharm 导入 setting文件后导致了这个报错￼￼￼
 
