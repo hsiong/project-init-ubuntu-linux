@@ -1286,8 +1286,8 @@ hsiong:base-backend/ (main*) $ git push -u origin HEAD                          
 ```
 #!/bin/bash
 # === 创建 Redis Desktop Manager 启动器 ===
-APP_PATH="/home/hsiong/code/Software/Another-Redis-Desktop-Manager-linux-1.7.1-x86_64.AppImage"
-ICON_PATH="/home/hsiong/.local/share/icons/redis.png"
+APP_PATH="/home/hsiong/Project/config/Another/Another-Redis-Desktop-Manager-linux-1.7.4-x86_64.AppImage"
+ICON_PATH="//home/hsiong/Project/config/Another/redis.png"
 DESKTOP_FILE="$HOME/.local/share/applications/another-redis-desktop-manager.desktop"
 DESKTOP_SHORTCUT="$HOME/Desktop/Another-Redis-Desktop-Manager.desktop"
 
@@ -1295,7 +1295,7 @@ DESKTOP_SHORTCUT="$HOME/Desktop/Another-Redis-Desktop-Manager.desktop"
 mkdir -p "$(dirname "$ICON_PATH")"
 
 # https://icon2.cleanpng.com/20180630/zte/kisspng-redis-database-erlang-cache-computer-servers-5b3814aade3601.5242758815304019629102.jpg
-手动下载
+# 手动下载
 
 # 生成菜单项
 cat << EOF > "$DESKTOP_FILE"
@@ -1311,6 +1311,7 @@ StartupNotify=true
 EOF
 
 # 设置权限
+chmod +x "$APP_PATH"
 chmod +x "$DESKTOP_FILE"
 
 # 同步数据库（让菜单立即刷新）
