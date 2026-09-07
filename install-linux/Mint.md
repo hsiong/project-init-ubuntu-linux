@@ -757,7 +757,8 @@ flatpak run org.deskflow.deskflow
 >
 > 命令：`flatpak run org.deskflow.deskflow`
 
-+ mac 与 linux 共用快捷键
++ `Hide the windows when app starts`
++ mac 与 linux 共用快捷键 `Computers` -> double click -> switch `meta` & `ctrl`, restart deskflow
 
 #### Tailscale - 泄密风险 - 废弃
 
@@ -788,25 +789,6 @@ flatpak run org.deskflow.deskflow
 > 
 > ```
 >
-
-#### mint 如何通过 deskflow 把 ctrl 与  alt 颠倒
-
-现在的情况
-
-| mac键盘 | mint |
-| ------- | ---- |
-| cmd     | ctrl |
-| opt     | alt  |
-| ctrl    | win  |
-
-希望
-| mac键盘 | mint |
-| ------- | ---- |
-| cmd     | alt  |
-| opt     | win  |
-| ctrl    | ctrl |
-
-> 未实现, 回家搞
 
 ### Typora
 
@@ -852,10 +834,11 @@ javac 17.0.9
 
 ### Python
 
-Mint 通常自带 Python 3：
+Mint 通常自带 Python 3： 但是没有自带 pip
 
 ```
 python3 --version
+pip3 --version
 ```
 
 输出类似：
@@ -868,9 +851,17 @@ Python 3.10.12
 
 ```
 sudo apt update
-sudo apt install -y python3 python3-pip python3-venv python3-dev
-python3 --version
+# sudo apt install -y python3 python3-pip python3-venv python3-dev
+sudo apt install python3-pip
+
+# 验证安装成功
 pip3 --version
+
+# 先确认 pip3 的实际路径（通常是 /usr/bin/pip3）
+which pip3
+
+# 创建软链接
+sudo ln -s /usr/bin/pip3 /usr/local/bin/pip
 
 # pip 清华源
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple 
@@ -881,6 +872,8 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 `python3-dev`: 编译 C 扩展时所需
 
 `build-essential`: gcc、make 等基础工具
+
+
 
 ### Pycharm & IDEA
 
