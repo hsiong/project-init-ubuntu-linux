@@ -844,12 +844,6 @@ echo $JAVA_HOME
 java -version
 ```
 
-验证编译器
-
-```
-javac -version
-```
-
 输出示例：
 
 ```
