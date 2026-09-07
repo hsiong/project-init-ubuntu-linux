@@ -810,7 +810,7 @@ flatpak run org.deskflow.deskflow
 
 ### Typora
 
-下载安装包, 安装即可
+下载安装包, 安装即可 (Linux 免费) 
 
 - https://lizhi.shop/products/typora?cid=jxlwguir
 - 新用户免费加入会员，首单立减 5 元
@@ -820,7 +820,7 @@ flatpak run org.deskflow.deskflow
 
 ```
 sudo apt update
-sudo apt install openjdk-17-jdk
+sudo apt install openjdk-21-jdk
 vim ~/.profile
 ```
 
