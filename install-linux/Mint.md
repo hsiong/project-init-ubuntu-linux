@@ -1250,22 +1250,24 @@ npm config set registry=https://registry.npmjs.org
 
 ### Github ssh
 
-```
+````
 ssh-keygen -t ed25519 -C "你的邮箱"
 ls -l ~/.ssh
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 
 vim ~/.ssh/config
+```
 Host github.com
-  HostName github.com
-  User git
-  IdentityFile ~/.ssh/id_ed25519
-  AddKeysToAgent yes
-  IdentitiesOnly yes
+HostName github.com
+User git
+IdentityFile ~/.ssh/id_ed25519
+AddKeysToAgent yes
+IdentitiesOnly yes
+```
 
 cat ~/.ssh/id_ed25519.pub # 加入 github
-```
+````
 
 ```
 ssh-keygen -R github.com  # 清除旧记录（如果有）
@@ -1279,53 +1281,59 @@ hsiong:base-backend/ (main*) $ git push -u origin HEAD                          
 
 > 注意地址要使用 ssh 而不是 https
 
-### Redis Desktop
+### Another-Redis-Desktop-Manager
 
-```
-#!/bin/bash
-# === 创建 Redis Desktop Manager 启动器 ===
-APP_PATH="/home/hsiong/code/Software/Another-Redis-Desktop-Manager-linux-1.7.1-x86_64.AppImage"
-ICON_PATH="/home/hsiong/.local/share/icons/redis.png"
-DESKTOP_FILE="$HOME/.local/share/applications/another-redis-desktop-manager.desktop"
-DESKTOP_SHORTCUT="$HOME/Desktop/Another-Redis-Desktop-Manager.desktop"
++ 直接下 `.dmg` 安装即可
 
-# 创建图标目录
-mkdir -p "$(dirname "$ICON_PATH")"
++ 已废弃
 
-# https://icon2.cleanpng.com/20180630/zte/kisspng-redis-database-erlang-cache-computer-servers-5b3814aade3601.5242758815304019629102.jpg
-手动下载
+  ```
+  #!/bin/bash
+  # === 创建 Redis Desktop Manager 启动器 ===
+  APP_PATH="/home/hsiong/code/Software/Another-Redis-Desktop-Manager-linux-1.7.1-x86_64.AppImage"
+  ICON_PATH="/home/hsiong/.local/share/icons/redis.png"
+  DESKTOP_FILE="$HOME/.local/share/applications/another-redis-desktop-manager.desktop"
+  DESKTOP_SHORTCUT="$HOME/Desktop/Another-Redis-Desktop-Manager.desktop"
+  
+  # 创建图标目录
+  mkdir -p "$(dirname "$ICON_PATH")"
+  
+  # https://icon2.cleanpng.com/20180630/zte/kisspng-redis-database-erlang-cache-computer-servers-5b3814aade3601.5242758815304019629102.jpg
+  手动下载
+  
+  # 生成菜单项
+  cat << EOF > "$DESKTOP_FILE"
+  [Desktop Entry]
+  Name=Another Redis Desktop Manager
+  Comment=Manage Redis databases with a GUI client
+  Exec=env LIBGL_ALWAYS_SOFTWARE=1 $APP_PATH --in-process-gpu
+  Icon=$ICON_PATH
+  Terminal=false
+  Type=Application
+  Categories=Development;Database;
+  StartupNotify=true
+  EOF
+  
+  # 设置权限
+  chmod +x "$DESKTOP_FILE"
+  
+  # 同步数据库（让菜单立即刷新）
+  update-desktop-database ~/.local/share/applications >/dev/null 2>&1
+  
+  # 复制到桌面（可双击启动）
+  cp "$DESKTOP_FILE" "$DESKTOP_SHORTCUT"
+  chmod +x "$DESKTOP_SHORTCUT"
+  
+  echo "✅ 已完成：
+  1️⃣ 应用菜单已创建 → 搜索 'Another Redis Desktop Manager'
+  2️⃣ 桌面图标已生成 → 双击即可启动
+  3️⃣ 启动命令：LIBGL_ALWAYS_SOFTWARE=1 --in-process-gpu
+  图标文件路径：$ICON_PATH
+  "
+  
+  ```
 
-# 生成菜单项
-cat << EOF > "$DESKTOP_FILE"
-[Desktop Entry]
-Name=Another Redis Desktop Manager
-Comment=Manage Redis databases with a GUI client
-Exec=env LIBGL_ALWAYS_SOFTWARE=1 $APP_PATH --in-process-gpu
-Icon=$ICON_PATH
-Terminal=false
-Type=Application
-Categories=Development;Database;
-StartupNotify=true
-EOF
-
-# 设置权限
-chmod +x "$DESKTOP_FILE"
-
-# 同步数据库（让菜单立即刷新）
-update-desktop-database ~/.local/share/applications >/dev/null 2>&1
-
-# 复制到桌面（可双击启动）
-cp "$DESKTOP_FILE" "$DESKTOP_SHORTCUT"
-chmod +x "$DESKTOP_SHORTCUT"
-
-echo "✅ 已完成：
-1️⃣ 应用菜单已创建 → 搜索 'Another Redis Desktop Manager'
-2️⃣ 桌面图标已生成 → 双击即可启动
-3️⃣ 启动命令：LIBGL_ALWAYS_SOFTWARE=1 --in-process-gpu
-图标文件路径：$ICON_PATH
-"
-
-```
+  
 
 
 
