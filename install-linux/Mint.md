@@ -197,8 +197,8 @@ sudo vim /etc/apt/apt.conf.d/01proxy
 写入：
 
 ```
-Acquire::http::Proxy "http://127.0.0.1:7897/";
-Acquire::https::Proxy "http://127.0.0.1:7897/";
+Acquire::http::Proxy "http://127.0.0.1:7890/";
+Acquire::https::Proxy "http://127.0.0.1:7890/";
 ```
 
 test:
@@ -401,92 +401,50 @@ sudo update-desktop-database
 
 + startup - add application
 
-  ```
+```
   export https_proxy="http://127.0.0.1:7890"
   #export http_proxy="http://127.0.0.1:7890" 
   export all_proxy=
   ```
 
 + curl 设置代理
-```
+  ```
 
 
 
 https://github.com/hsiong/learning-my-note/tree/main/tool/system/vps-singbox
 
-### 输入法 - 谷歌
+### 输入法 - 谷歌 - fcitx 5
 
-在 **Linux Mint（基于 Ubuntu 22/24 系列）** 上安装 **Google 拼音输入法（Fcitx 版）**。
- 下面是完整、稳定的安装方法👇
+如果你想从 Fcitx4 升级，按以下步骤操作即可：
 
-------
-
-🧩 一、确认输入法框架（必须用 Fcitx 4）
-
-Mint 默认使用 `ibus`，而 **Google Pinyin 仅支持 Fcitx 4**。
-
-先切换输入法框架：
+1. 卸载旧版 Fcitx4（避免冲突，推荐执行）
 
 ```
-im-config -n fcitx
+sudo apt remove --purge fcitx fcitx-googlepinyin 'fcitx-*'
+sudo apt autoremove -y
+rm -rf ~/.config/fcitx ~/.fcitx
 ```
 
-如果系统没装 Fcitx，先装上：
+2. 安装 Fcitx5 本体 + 中文插件
 
 ```
 sudo apt update
-sudo apt install -y fcitx fcitx-bin fcitx-ui-classic fcitx-table fcitx-config-common \
-  fcitx-frontend-gtk3 fcitx-frontend-qt5
+sudo apt install -y fcitx5 fcitx5-chinese-addons \
+  fcitx5-frontend-gtk2 fcitx5-frontend-gtk3 fcitx5-frontend-qt5 \
+  fcitx5-config-qt
 ```
 
-然后重启一次系统或执行：
+- `fcitx5-chinese-addons`：包含拼音、五笔等全部中文输入法，无需单独安装谷歌拼音
+- `fcitx5-config-qt`：官方图形化配置工具
+
+3. 切换系统输入法框架
 
 ```
-fcitx-autostart &
+im-config -n fcitx5
 ```
 
-------
-
-🧰 二、安装 Google 拼音输入法模块
-
-Fcitx 自带 Google 拼音模块，不用额外下载 `.deb`。
-
-```
-sudo apt install -y fcitx-googlepinyin
-```
-
-------
-
-**重启 Fcitx 进程（必做）**
-
-安装新输入法模块后，必须重启 Fcitx 才能加载新插件，终端执行：
-
-```
-fcitx -r
-```
-
-> 必须 logout 
-
-⚙️ 三、添加输入法
-
-打开配置界面：
-
-```
-fcitx-config-gtk3
-```
-
-1. 点击 “+”
-2. 搜索 “Google Pinyin”
-3. 选中并添加到输入法列表顶部
-4. 保存后退出
-
-切换快捷键默认是：`Ctrl + Space`（或在 Fcitx 设置里改）。
-
-------
-
-🔠 四、设置环境变量（确保 Fcitx 全局生效）
-
-执行：
+4. 写入全局环境变量（确保全应用生效）
 
 ```
 grep -q "GTK_IM_MODULE=fcitx" ~/.xprofile 2>/dev/null || cat >> ~/.xprofile <<'EOF'
@@ -496,45 +454,134 @@ export XMODIFIERS="@im=fcitx"
 EOF
 ```
 
-然后重启系统（或注销再登录）。
+5. 生效与配置
 
-------
++ `vim ~/.profile`
 
-✅ 五、验证是否生效
+  Add at the bottom:
 
-执行：
+  ```
+  export XMODIFIERS="@im=fcitx"
+  export GTK_IM_MODULE=fcitx
+  export QT_IM_MODULE=fcitx
+  ```
 
-```
-fcitx-diagnose | grep google
-```
-
-应当看到：
-
-```
-Input Method Configurations:
-  Google Pinyin: Enabled
-```
-
-在输入框按 `Ctrl + Space` 试试，就能切换到 Google 拼音输入法。
-
-六、快捷键
-
-打开输入法管理器, 关闭所有快捷键; 切换中英文用ctrl
-
-```
-fcitx-configtool
-```
-
-- `Extra key` => `Disabled`
-- ... 
-- 打开 GUI 配置器 → 选择 'addon'
-  - 找到 "Simplified Chinese....Traditional..." 双击
-  - 修改为 `Ctrl+Shift+F` 或 “无(None)”
++ 自动启动
+  ```
+  
+  mkdir -p ~/.config/autostart
+  cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart/
+  im-config -n fcitx5
+  sudo reboot
+  ```
 
 
-#### 云拼音
 
-fcitx4 不存在云
+1. **注销当前用户并重新登录**（必须，环境变量才会全局生效）
+2. 终端执行 `fcitx5-config-qt` 打开配置界面
+3. 点击左侧「+」号，**取消勾选窗口底部的「Only Show Current Language」**
+4. 搜索 `Pinyin`（简体中文拼音），选中后添加到输入法列表顶部
+5. 保存退出，按 `Ctrl+Space` 即可切换中英文输入
+
+6. 可选：扩展词库增强
+
+官方源内置基础词库足够日常使用；如果需要更大规模词库，可手动导入维基百科、萌娘百科等第三方词库，进一步提升生僻词、网络用语的识别率。
+
+> **<u>google-fcitx4</u>**
+>
+> 输入法 - 谷歌 在 Linux Mint（基于 Ubuntu 22/24 系列） 上安装 Google 拼音输入法（Fcitx 版）。  下面是完整、稳定的安装方法👇 
+>
+> Linux Mint（基于 Ubuntu22/24）安装 Fcitx 版谷歌拼音输入法
+>
+> > 重要说明：Google Pinyin 仅支持 **Fcitx 4**，Mint 默认 ibus 框架，需要更换框架
+>
+> 🧩 一、确认并安装 Fcitx4 输入法框架
+>
+> 1. 切换输入法框架
+>
+> ```
+> im-config -n fcitx
+> ```
+>
+> 1. 如果未安装 Fcitx，执行安装
+>
+> ```
+> sudo apt update
+> sudo apt install -y fcitx fcitx-bin fcitx-ui-classic fcitx-table fcitx-config-common \
+> fcitx-frontend-gtk3 fcitx-frontend-qt5
+> ```
+>
+> 1. 启动 fcitx（重启系统也可以）
+>
+> ```
+> fcitx-autostart &
+> ```
+>
+> 🧰 二、安装 Google 拼音输入法模块
+>
+> > Fcitx4 自带谷歌拼音模块，无需手动下载 deb 包
+>
+> ```
+> sudo apt install -y fcitx-googlepinyin
+> ```
+>
+> 安装完成**必须重启 Fcitx 进程**
+>
+> ```
+> fcitx -r
+> ```
+>
+> > 安装模块后建议注销重新登录
+>
+> ⚙️ 三、添加 Google Pinyin 输入法
+>
+> 1. 打开 Fcitx 图形配置界面
+>
+> ```
+> fcitx-config-gtk3
+> ```
+>
+> 1. 点击`+`号，搜索`Google Pinyin`，选中添加至列表顶部
+> 2. 保存退出
+>
+> - 默认切换快捷键：`Ctrl + Space`，可在设置中自定义
+>
+> 🔠 四、配置环境变量，全局生效
+>
+> 将环境变量写入`~/.xprofile`，终端运行下面整条命令：
+>
+> ```
+> grep -q "GTK_IM_MODULE=fcitx" ~/.xprofile 2>/dev/null || cat >> ~/.xprofile <<'EOF'
+> export GTK_IM_MODULE=fcitx
+> export QT_IM_MODULE=fcitx
+> export XMODIFIERS="@im=fcitx"
+> EOF
+> ```
+>
+> > 修改完成后重启系统或者注销重新登录
+>
+> ✅ 五、验证是否安装成功
+>
+> ```
+> fcitx-diagnose | grep google
+> ```
+>
+> 正常输出示例：
+>
+> ```
+> Input Method Configurations: Google Pinyin: Enabled
+> ```
+>
+> 在输入框按下 `Ctrl + Space` 即可切换谷歌拼音
+>
+> 六、快捷键优化（可选）
+>
+> 1. 打开输入法管理器 `fcitx-configtool`
+> 2. 关闭多余快捷键
+> 3. 切换中英文快捷键可自行调整
+> 4. 切换简繁中文：进入`addon`，找到`Simplified Chinese....Traditional...`，双击修改快捷键为`Ctrl+Shift+F`或者**None（无）**
+>
+> > 备注：Fcitx4 不支持云拼音功能
 
 ### Chrome
 
@@ -604,8 +651,52 @@ sudo apt full-upgrade
     进入桌面后你就可以安装官方 NVIDIA 驱动。
 
 6. 安装驱动
+   
+   ```
+   sudo apt update
+   # 不需要 graphics-drivers PPA，Ubuntu 官方仓库现在已经内置主流 NVIDIA 驱动（550/560）
+   ubuntu-drivers devices # Then install the package marked recommended. And do not use open version ! 
+   sudo apt install nvidia-driver-550 -y
+   sudo reboot
+   ```
 
-   > 千万不要执行 `sudo ubuntu-drivers autoinstall `, 会导致各种驱动异常
+#### nvidia-smi
+
+`NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.`
+
+Ubuntu 默认开启安全启动时，会阻止未签名的第三方内核模块加载，这是 90% 以上此类问题的诱因。
+
+检查安全启动状态：
+
+```
+mokutil --sb-state
+```
+
+- 如果输出 `SecureBoot enabled`：
+  1. 重启电脑，进入 BIOS/UEFI 设置界面；
+  2. 找到 **Secure Boot** 选项，设置为 `Disabled`；
+  3. 保存设置并重启系统，再执行 `nvidia-smi` 测试。
+
+#### Error
+
+##### 不慎安装 `open` 驱动 
+
+```
+dpkg -l | grep -E 'nvidia|libnvidia'
+```
+
+```
+sudo apt purge nvidia-driver-595-open -y
+sudo apt autoremove --purge -y
+sudo apt autoclean
+sudo update-initramfs -u
+```
+
+
+
+##### 千万不要执行 `sudo ubuntu-drivers autoinstall `, 
+
+   > 会导致各种驱动异常
    >
    > 万一执行了, 那么
    >
@@ -616,29 +707,22 @@ sudo apt full-upgrade
    > 下载对应的 extra xxx - 点击
    > https://packages.ubuntu.com/noble/linux-modules-extra-6.14.0-33-generic
    > https://security.ubuntu.com/ubuntu/pool/main/l/linux-hwe-6.17/linux-modules-extra-6.17.0-20-generic_6.17.0-20.20~24.04.1_amd64.deb
-
-   >```
-   >cd ~/Downloads
-   >sudo dpkg -i linux-modules-extra-6.14.0-33-generic_*.deb
-   >sudo update-initramfs -u
-   >sudo reboot
-   >lspci -nnk | grep -A3 -i eth
-   >```
-
-   ```
-   sudo apt update
-   # 不需要 graphics-drivers PPA，Ubuntu 官方仓库现在已经内置主流 NVIDIA 驱动（550/560）
-   sudo apt install nvidia-driver-550 -y
-   sudo reboot
-   ```
+   >
+   > ```
+   > cd ~/Downloads
+   > sudo dpkg -i linux-modules-extra-6.14.0-33-generic_*.deb
+   > sudo update-initramfs -u
+   > sudo reboot
+   > lspci -nnk | grep -A3 -i eth
+   > ```
 
 ### Git
 
 + ~/.profile
 
 ```
-git config --global http.proxy http://127.0.0.1:7897
-git config --global https.proxy http://127.0.0.1:7897
+git config --global http.proxy http://127.0.0.1:7890
+git config --global https.proxy http://127.0.0.1:7890
 ```
 
 
@@ -651,8 +735,8 @@ sudo apt install flatpak
 
 # https://github.com/deskflow/deskflow/releases/download/v1.20.1/deskflow-1.20.1-linux-x86_64.flatpak
 
-http_proxy=http://127.0.0.1:7897 \
-https_proxy=http://127.0.0.1:7897 \
+http_proxy=http://127.0.0.1:7890 \
+https_proxy=http://127.0.0.1:7890 \
 flatpak install --user ./deskflow-1.20.1-linux-x86_64.flatpak
 ```
 
