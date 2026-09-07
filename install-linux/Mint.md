@@ -874,8 +874,6 @@ pip --version
 
 `build-essential`: gcc、make 等基础工具
 
-
-
 ### Pycharm & IDEA
 
 + pycharm - Linux linux
