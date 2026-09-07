@@ -759,33 +759,35 @@ flatpak run org.deskflow.deskflow
 
 + mac 与 linux 共用快捷键
 
-#### Tailscale
+#### Tailscale - 泄密风险 - 废弃
 
-
-Google 账号统一登录
-
-实现跨网端控制
-
-+ Linux
-  + `sudo apt-get install -y tailscale`
-  + `sudo tailscale up`  
-  + 输入 Tailscale Machine Ip
-  + autostart  `sudo systemctl enable --now tailscaled`
-  + `sudo systemctl disable tailscaled`
-
-+ Mac 
-  	+ Configure Server 控制
-  	+ 一段时间可能会掉线 ⭐️ 需优化
-
-#### mac install Tailscale
-不要使用桌面端, 各种问题
-```
-brew install --formula tailscale
-sudo brew services start tailscale # 加入自启服务
-tailscale up
-tailscale status
-
-```
+> Google 账号统一登录
+>
+> 实现跨网端控制
+>
+> + Linux
+>   + `sudo apt-get install -y tailscale`
+>   + `sudo tailscale up`  
+>   + 输入 Tailscale Machine Ip
+>   + autostart  `sudo systemctl enable --now tailscaled`
+>   + `sudo systemctl disable tailscaled`
+>
+> + Mac 
+>   	+ Configure Server 控制
+>   	+ 一段时间可能会掉线 ⭐️ 需优化
+>
+> #### mac install Tailscale
+>
+> 不要使用桌面端, 各种问题
+>
+> ```
+> brew install --formula tailscale
+> sudo brew services start tailscale # 加入自启服务
+> tailscale up
+> tailscale status
+> 
+> ```
+>
 
 #### mint 如何通过 deskflow 把 ctrl 与  alt 颠倒
 
