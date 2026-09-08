@@ -613,7 +613,7 @@ sudo apt -f install
 sudo apt full-upgrade
 ```
 
-### 显卡驱动
+### 显卡驱动 Nvidia
 
 > 适用于 4090/5090 新显卡, 需要重新安装
 
@@ -657,11 +657,11 @@ sudo apt full-upgrade
     进入桌面后你就可以安装官方 NVIDIA 驱动。
 
 6. 安装驱动
-   
+
    ```
    sudo apt update
    # 不需要 graphics-drivers PPA，Ubuntu 官方仓库现在已经内置主流 NVIDIA 驱动（550/560）
-   ubuntu-drivers devices # Then install the package marked recommended. And do not use open version ! 
+   ubuntu-drivers devices # Then install the package marked recommended.
    sudo apt install nvidia-driver-550 -y
    sudo reboot
    ```
@@ -685,7 +685,7 @@ mokutil --sb-state
 
 #### Error
 
-##### 不慎安装 `open` 驱动 
+##### 不慎安装 `错误` 驱动 
 
 ```
 dpkg -l | grep -E 'nvidia|libnvidia'
@@ -1361,6 +1361,13 @@ sudo apt install nvtop
 ```
 nvtop
 ```
+
+#### nvtop 显示集显而不是独显? 
+
+1. 显卡驱动一定要装 `recommend`
+2. `Initiate Graphic Adapter`：**IGD**（首要显示输出走核显）
+3. `Integrated Graphics`：**UMA Auto** ✅（不用 Force）
+4. `HybridGraphics`：**Enabled** ✅
 
 ###  **psensor（图形化温度监控）**
 
