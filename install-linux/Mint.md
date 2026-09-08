@@ -1387,6 +1387,38 @@ sudo apt install psensor
 psensor
 ```
 
+
+
+## 快捷键 shortcut
+
+### Take a scrrentshot of an area
+
+ctrl+shift+4
+
+### Close window
+
+Ctrl + w
+
+### switch to left workspace / switch to right workspace
+
+ctrl+alt+ <- / ->
+
+### move app to workspace
+
+shift + ctrl+alt+ <- / ->
+
+### show all space
+
++ ctrl + alt + up
+
+### show all application
+
++ ctrl + alt + down
+
+
+
+# 其他问题
+
 ### 我想让 Guake 完全替代默认终端
 
 因为原生 terminal 不支持撤销和重做
@@ -1396,8 +1428,6 @@ ctrl + c & ctrl + v 也不支持
 ### BaiduDisk
 
 ### Node(可选)
-
-# 其他问题
 
 ## 【ubuntu更新驱动后联不上网】
 
@@ -1557,15 +1587,4 @@ sudo dkms install mediatek-mt7927/2.9
 ```
 
 #### 禁用 tty
-
-
-# shortcuts
-
-## switch workspace
-add custom shortcut
-+ switch to left workspace
-+ switch to right workspace
-
-## show all application
-+ ctrl + alt + down
 
