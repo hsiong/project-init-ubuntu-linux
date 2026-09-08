@@ -1417,17 +1417,25 @@ shift + ctrl+alt+ <- / ->
 
 
 
-# 其他问题
+# 其他软件
 
-### 我想让 Guake 完全替代默认终端
+## ollama
+
+https://github.com/hsiong/learning-my-note/blob/main/ai/llm/tool/ollama-linux.md
+
+## 我想让 Guake 完全替代默认终端
 
 因为原生 terminal 不支持撤销和重做
 
 ctrl + c & ctrl + v 也不支持
 
-### BaiduDisk
+## BaiduDisk
 
-### Node(可选)
+## Node(可选)
+
+
+
+# 其他问题
 
 ## 【ubuntu更新驱动后联不上网】
 
