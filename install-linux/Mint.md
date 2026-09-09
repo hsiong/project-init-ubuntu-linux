@@ -242,11 +242,71 @@ sudo update-alternatives --config editor
 
 ### Wechat
 
-### Mint Panel 调整
+### Mint Desktop 调整
 
-`Panel Setting` -> move; size
++ Panel: `Panel Setting` -> move; size
++ Desktop arrange: `Customize -> Unclick Auto-arrange `
 
 > reboot
+
+#### Mint Nemo `Open in terminal` not working
+
+  这是 GNOME Terminal 与 从终端启动图形程序 的设计冲突导致的：                                              
+  1. 每当你打开一个 GNOME 终端窗口，它都会在当前 shell 中注入专属的环境变量  
+
+    GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/<UUID>。                  
+  2. 如果你曾在终端里输入 nemo .、nemo /path，或者某些 IDE（如 VS            
+
+    Code、Cursor）是在终端里敲命令启动的，子程序就会永久继承这个环境变量。     
+  3. 当你关闭了那个最初敲命令的终端窗口后，该 UUID 在系统 D-Bus 中被销毁。   
+  4. 此时你在 Nemo 里右键“Open in Terminal”，Nemo 把这个失效的 UUID 传给了   
+
+    gnome-terminal。                                                           
+  5. gnome-terminal 找不到这个旧 screen，直接崩溃报错退出（而 Nemo           
+
+    忽略了它的退出报错，导致前台完全静默无响应）。                     
+
+```
+在任何全新的 Linux Mint / Ubuntu
+  系统上，只需在终端里运行下面这一段脚本即可（免 root）：
+  
+    mkdir -p ~/.local/bin
+    cat << 'EOF' > ~/.local/bin/gnome-terminal
+    #!/usr/bin/python3
+    import os, sys
+    from gi.repository import Gio
+  
+    screen = os.environ.get("GNOME_TERMINAL_SCREEN")
+    if screen:
+        is_valid = False
+        try:
+            proxy = Gio.DBusProxy.new_for_bus_sync(
+                Gio.BusType.SESSION,
+                Gio.DBusProxyFlags.DO_NOT_AUTO_START,
+                None,
+                "org.gnome.Terminal",
+                screen,
+                "org.gnome.Terminal.Terminal0",
+                None
+            )
+            xml = proxy.call_sync("org.freedesktop.DBus.Introspectable.      
+  Introspect", None, Gio.DBusCallFlags.NONE, 200, None)
+            if "org.gnome.Terminal.Terminal0" in xml.unpack()[0]:            
+                is_valid = True
+        except Exception:
+            pass
+        if not is_valid:
+            os.environ.pop("GNOME_TERMINAL_SCREEN", None)
+            os.environ.pop("GNOME_TERMINAL_SERVICE", None)
+  
+    os.execv("/usr/bin/gnome-terminal", ["/usr/bin/gnome-terminal"] + sys.   
+  argv[1:])
+    EOF
+    chmod +x ~/.local/bin/gnome-terminal
+
+```
+
+
 
 ### oh-my-zsh
 
@@ -1037,7 +1097,15 @@ rm -rf pycharm.key pycharm64.vmoptions
 
 kotlin 导致的报错, 停用Kotlin, 删除 /idea/plugins/Kotlin/*, 保留 Kotlin 目录, 重新下载即可
 
+#### Pin to panel
 
+通过开始菜单直接固定（最推荐）                                 
+                                                                             
+  1. 点击屏幕左下角的 Linux Mint 开始菜单（主菜单图标）。                    
+  2. 在左侧分类中选择 “编程” (Programming / 开发)，或者直接在搜索框输入 idea 
+    或 pycharm。                                                               
+  3. 右键 点击 IntelliJ IDEA 或 PyCharm 的图标。                             
+  4. 选择 “固定到面板” (Pin to Panel) 即可。        
 
 ### Docker
 
