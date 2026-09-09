@@ -226,6 +226,20 @@ sudo apt update
 sudo apt install vim -y
 ```
 
+#### system edit default vim not nano
+
+```
+SYSTEMD_EDITOR=vim sudo systemctl edit ollama
+```
+
+```
+
+sudo update-alternatives --config editor
+
+```
+
+
+
 ### Wechat
 
 ### Mint Panel 调整
@@ -1389,35 +1403,52 @@ psensor
 
 
 
-## 快捷键 shortcut
+# 快捷键 shortcut
 
-### Take a scrrentshot of an area
+## Take a scrrentshot of an area
 
 ctrl+shift+4
 
-### Close window
+## Close window
 
-Ctrl + w
+Ctrl + alt + w (与 chrome ctrl + w 区分)
 
-### switch to left workspace / switch to right workspace
+## switch to left workspace / switch to right workspace
 
 ctrl+alt+ <- / ->
 
-### move app to workspace
+## move app to workspace
 
 shift + ctrl+alt+ <- / ->
 
-### show all space
+## show all space
 
 + ctrl + alt + up
 
-### show all application
+## show all application
 
 + ctrl + alt + down
+
+## lock scrren
+
+ctrl+ alt + L
 
 
 
 # 其他软件
+
+## codex  
+
+`codex --dangerously-bypass-approvals-and-sandbox `
+
+## agy
+
+```
+ln -sf ~/.local/bin/agy ~/.local/bin/antigravity
+antigravity --dangerously-skip-permissions   
+```
+
+
 
 ## ollama
 
