@@ -1103,6 +1103,7 @@ kotlin 导致的报错, 停用Kotlin, 删除 /idea/plugins/Kotlin/*, 保留 Kotl
                                                                              
   1. 点击屏幕左下角的 Linux Mint 开始菜单（主菜单图标）。                    
   2. 在左侧分类中选择 “编程” (Programming / 开发)，或者直接在搜索框输入 idea 
+
     或 pycharm。                                                               
   3. 右键 点击 IntelliJ IDEA 或 PyCharm 的图标。                             
   4. 选择 “固定到面板” (Pin to Panel) 即可。        
@@ -1472,6 +1473,10 @@ psensor
 
 
 # 快捷键 shortcut
+
+## 禁用简繁切换
+
+`Fcitx config->Addon->Simplified and Traditional...->unclick toggle key` 
 
 ## Take a scrrentshot of an area
 
