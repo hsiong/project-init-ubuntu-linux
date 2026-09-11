@@ -159,7 +159,7 @@ PCI\VEN_10EC&DEV_8126&SUBSYS_XXXX
 + 部分 linux 版本不支持 mtk wifi, 可以使用手机 - usb wifi 
   `手机 - wifi config - via wifi with usb`, 打开这个设置后, 无需任何配置, 直接使用手机 wifi
 
-## Install
+# Install
 
 **`~/.zshrc`**：仅交互式 zsh 打开时执行。放别名/函数/轻量 PATH 追加。
 
@@ -566,6 +566,22 @@ EOF
 6. 可选：扩展词库增强
 
 官方源内置基础词库足够日常使用；如果需要更大规模词库，可手动导入维基百科、萌娘百科等第三方词库，进一步提升生僻词、网络用语的识别率。
+
+#### fcitx 如何关闭quick phrase                                                                                          
+
+    # 1. 禁用拼音输入法的分号 (;) 和 v 键触发快速短语（最关键的一步）
+    
+    sed -i 's/^QuickPhraseKey=semicolon/QuickPhraseKey=/' ~/.config/fcitx5/conf/pinyin.conf                                                                    
+    sed -i 's/^VAsQuickphrase=True/VAsQuickphrase=False/' ~/.config/fcitx5/conf/pinyin.conf                                                                    
+                    
+    # 2. 在 Fcitx 5 主配置中正确禁用 quickphrase 附加组件           
+    
+    sed -i 's/^DisabledAddons=$/DisabledAddons=quickphrase/' ~/.config/fcitx5/config                                                                                                 # 4. 重新加载配置立即生效                                     
+    fcitx5-remote -r                           
+
+
+
+
 
 > **<u>google-fcitx4</u>**
 >
@@ -1505,8 +1521,6 @@ shift + ctrl+alt+ <- / ->
 ## lock scrren
 
 ctrl+ alt + L
-
-
 
 # 其他软件
 
