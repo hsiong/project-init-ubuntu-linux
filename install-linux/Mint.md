@@ -569,15 +569,7 @@ EOF
 
 #### fcitx 如何关闭quick phrase                                                                                          
 
-    # 1. 禁用拼音输入法的分号 (;) 和 v 键触发快速短语（最关键的一步）
-    
-    sed -i 's/^QuickPhraseKey=semicolon/QuickPhraseKey=/' ~/.config/fcitx5/conf/pinyin.conf                                                                    
-    sed -i 's/^VAsQuickphrase=True/VAsQuickphrase=False/' ~/.config/fcitx5/conf/pinyin.conf                                                                    
-                    
-    # 2. 在 Fcitx 5 主配置中正确禁用 quickphrase 附加组件           
-    
-    sed -i 's/^DisabledAddons=$/DisabledAddons=quickphrase/' ~/.config/fcitx5/config                                                                                                 # 4. 重新加载配置立即生效                                     
-    fcitx5-remote -r                           
+    1. 输入法标签页 ➔ 点击 “拼音” 右侧的 齿轮（配置）：             • 找到 “key to trigger quickphrase”：点击按退格键清空（不要留分号 ;）。    
 
 
 
