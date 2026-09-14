@@ -1194,7 +1194,7 @@ This message shows that your installation appears to be working correctly.
 👤 七、可选：让当前用户无需 sudo 使用 Docker
 
 ```
-
+sudo usermod -aG docker $USER
 ```
 
 然后退出并重新登录终端，让组权限生效。
@@ -1257,6 +1257,30 @@ sudo apt install docker-compose
   sudo systemctl restart docker
   ```
   
+
+#### docker - proxy
+
++ `docker pull proxy` => 
+
+  ```
+  hsiong:~/ $ vim /etc/systemd/system/docker.service.d                 [11:19:09]
+  hsiong:~/ $ cd /etc/systemd/system/docker.service.d                  [11:19:15]
+  hsiong:docker.service.d/ $ ls                                        [11:19:25]
+  proxy.conf
+  hsiong:docker.service.d/ $ cat proxy.conf                            [11:19:26]
+  [Service]
+  Environment="HTTP_PROXY=http://127.0.0.1:7890"
+  Environment="HTTPS_PROXY=http://127.0.0.1:7890"
+  Environment="NO_PROXY=localhost,127.0.0.1,::1"
+  hsiong:docker.service.d/ $                
+  ```
+
+  
+
++ `docker container proxy -> ~/.docker/config.json`
+
+宿主机 ~/.docker/config.json 中的 proxies 是 Docker CLI 的客户端级配置，作用是把代理强制无差别注入到每个新建容器中。如果宿主机的本意只是想让 docker pull 拉取镜像加速，正确的做法是配置 systemd 守护进程代理（/etc/systemd/system/docker.service.d/http-proxy.conf）或镜像加速器，而不是在 ~/.docker/config.json 里配置 127.0.0.1:7890，否则后续创建的任何新容器只要访问网络都会踩这个坑。     
+
 
 
 ### NPM 
