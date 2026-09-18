@@ -494,6 +494,98 @@ sudo update-desktop-database
 
 https://github.com/hsiong/learning-my-note/tree/main/tool/system/vps-singbox
 
+### 优先处理字体            
+
+ 直接卸载 Droid Sans Fallback，让系统直接回退到高质量的思源黑体（系统内已安装）：                                                                                                                                                                                                              
+
+```
+sudo apt purge fonts-droid-fallback              
+```
+
+#### 2. 创建用户级 Fontconfig 规则（锁定简体中文与渲染优化）                                                                                                                                                                                                                                
+
+在当前用户目录下配置 ~/.config/fontconfig/fonts.conf，强制将简体中文（SC）排在日韩（JP/KR）之前，并启用液晶抗锯齿：                                                                                                                                                                           
+
+```                                                                                                    
+    mkdir -p ~/.local/share/fonts/sarasa                       
+    cd /tmp                                                     
+    # 1. 下载简体中文等宽版                                       
+    wget -c https://github.com/be5invis/Sarasa-Gothic/releases/download/v1.0.41/SarasaFixedSC-TTF-1.0.41.7z                                   
+                                                                                                                                              
+    # 2. 解压到用户字体目录                                       
+    7z x SarasaFixedSC-TTF-1.0.41.7z -o"$HOME/.local/share/fonts/sarasa/"                                                                     
+
+    # 3. 刷新字体缓存                                            
+    fc-cache -fv    
+
+mkdir -p ~/.config/fontconfig        
+vim  ~/.config/fontconfig/fonts.conf        
+```
+
+
+
+```]                                                                                                                                                                                                                                                                          #### 3. 刷新字体缓存                                                                                                                                                                                                                                                                          fc-cache -fv               
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+
+  <!-- 屏蔽古董字体 Droid Sans Fallback -->
+  <selectfont>
+    <rejectfont>
+      <pattern>
+        <patelt name="family"><string>Droid Sans Fallback</string></patelt>
+      </pattern>
+    </rejectfont>
+  </selectfont>
+
+  <!-- 抗锯齿与亚像素渲染 -->
+  <match target="font">
+    <edit name="antialias" mode="assign"><bool>true</bool></edit>
+    <edit name="hinting" mode="assign"><bool>true</bool></edit>
+    <edit name="hintstyle" mode="assign"><const>hintslight</const></edit>
+    <edit name="rgba" mode="assign"><const>rgb</const></edit>
+    <edit name="lcdfilter" mode="assign"><const>lcddefault</const></edit>
+  </match>
+
+  <!-- 中文统一回退到 Sarasa Fixed SC -->
+  <alias>
+    <family>sans-serif</family>
+    <accept><family>Sarasa Fixed SC</family></accept>
+  </alias>
+  <alias>
+    <family>serif</family>
+    <accept><family>Sarasa Fixed SC</family></accept>
+  </alias>
+  <alias>
+    <family>monospace</family>
+    <accept><family>Sarasa Fixed SC</family></accept>
+  </alias>
+
+  <!-- 确保 CJK SC 排在 JP/KR 前面，避免日式字形 -->
+  <match target="pattern">
+    <test name="lang" compare="contains"><string>zh</string></test>
+    <test name="family" compare="contains"><string>Noto Sans CJK</string></test>
+    <edit name="family" mode="prepend" binding="strong">
+      <string>Sarasa Fixed SC</string>
+    </edit>
+  </match>
+
+</fontconfig>
+
+```
+
+
+
+刷新字体缓存
+
+```
+    fc-cache -fv                                              
+```
+
+
+
+
+
 ### 输入法 - 谷歌 - fcitx 5
 
 如果你想从 Fcitx4 升级，按以下步骤操作即可：
