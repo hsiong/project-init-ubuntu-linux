@@ -898,7 +898,7 @@ sudo update-initramfs -u
 
 ### Git
 
-+ ~/.profile
++ ~/.zshrc
 
 ```
 git config --global http.proxy http://127.0.0.1:7890
@@ -1629,6 +1629,10 @@ shift + ctrl+alt+ <- / ->
 ## lock scrren
 
 ctrl+ alt + L
+
+## Intelij
+
++ replace `ctrl + alt + <- / -> `  to `ctrl + opt + <- / -> `
 
 # 其他软件
 
